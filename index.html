@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy Hoạch Động C++</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-block .keyword {
+            color: #c678dd;
+        }
+
+        .code-block .function {
+            color: #61afef;
+        }
+
+        .code-block .number {
+            color: #d19a66;
+        }
+
+        .code-block .string {
+            color: #98c379;
+        }
+
+        .code-block .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .problem {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .problem h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+
+        .hint-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .formula-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .io-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .io-box pre {
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Quy Hoạch Động (Dynamic Programming)</h1>
+            <p>Tổng hợp kiến thức và bài tập thực hành</p>
+        </header>
+
+        <div class="content">
+            <!-- PHẦN 1: TỔNG HỢP KIẾN THỨC -->
+            <section id="theory">
+                <h2>1. Tổng Hợp Kiến Thức Quy Hoạch Động</h2>
+
+                <div class="card">
+                    <h3>🔍 Quy Hoạch Động Là Gì?</h3>
+                    <p><strong>Quy hoạch động (Dynamic Programming - DP)</strong> là một kỹ thuật lập trình để giải quyết các bài toán phức tạp bằng cách chia nhỏ chúng thành các bài toán con đơn giản hơn và lưu trữ kết quả của các bài toán con này để tránh tính toán lại.</p>
+                    
+                    <p><strong>Đặc điểm chính:</strong></p>
+                    <ul>
+                        <li><span class="highlight">Tối ưu hóa cấu trúc con</span>: Bài toán lớn có thể được chia thành các bài toán con tối ưu</li>
+                        <li><span class="highlight">Chồng chéo bài toán con</span>: Các bài toán con được giải nhiều lần</li>
+                        <li><span class="highlight">Lưu trữ kết quả</span>: Sử dụng bảng (mảng) để lưu kết quả đã tính</li>
+                        <li><span class="highlight">Tránh tính toán lại</span>: Kiểm tra bảng trước khi tính toán</li>
+                    </ul>
+
+                    <p><strong>Các bước giải quyết bài toán DP:</strong></p>
+                    <ol>
+                        <li>Xác định <strong>trạng thái</strong> (state) của bài toán</li>
+                        <li>Xác định <strong>công thức truy hồi</strong> (recurrence relation)</li>
+                        <li>Xác định <strong>điều kiện cơ sở</strong> (base case)</li>
+                        <li>Xác định <strong>thứ tự tính toán</strong> (bottom-up hoặc top-down)</li>
+                        <li>Xác định <strong>kết quả cuối cùng</strong></li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>⚖️ So Sánh Quy Hoạch Động và Đệ Quy</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Tiêu chí</th>
+                                <th>Đệ Quy</th>
+                                <th>Quy Hoạch Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Cách tiếp cận</strong></td>
+                                <td>Top-down (từ trên xuống)</td>
+                                <td>Bottom-up (từ dưới lên) hoặc Top-down với memoization</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lưu trữ kết quả</strong></td>
+                                <td>Không lưu trữ, tính lại mỗi lần</td>
+                                <td>Lưu trữ trong bảng để tái sử dụng</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Độ phức tạp thời gian</strong></td>
+                                <td>Thường O(2^n) hoặc cao hơn</td>
+                                <td>Thường O(n) hoặc O(n²)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Độ phức tạp không gian</strong></td>
+                                <td>O(n) cho stack đệ quy</td>
+                                <td>O(n) hoặc O(n²) cho bảng DP</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hiệu quả</strong></td>
+                                <td>Kém hiệu quả với bài toán lớn</td>
+                                <td>Rất hiệu quả, tránh tính toán lại</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ứng dụng</strong></td>
+                                <td>Phù hợp với bài toán nhỏ, logic đơn giản</td>
+                                <td>Phù hợp với bài toán lớn, có tính chồng chéo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>💡 Ví Dụ Minh Họa: Tính Số Fibonacci</h3>
+                    
+                    <p><strong>Bài toán:</strong> Tính số Fibonacci thứ n (F(n) = F(n-1) + F(n-2), F(0)=0, F(1)=1)</p>
+
+                    <h4>❌ Cách 1: Đệ Quy (Không tối ưu)</h4>
+                    <div class="code-block">
+<span class="keyword">int</span> <span class="function">fibonacci_recursive</span>(<span class="keyword">int</span> n) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) {
+        <span class="keyword">return</span> n;
+    }
+    <span class="keyword">return</span> <span class="function">fibonacci_recursive</span>(n - <span class="number">1</span>) + 
+           <span class="function">fibonacci_recursive</span>(n - <span class="number">2</span>);
+}
+<span class="comment">// Độ phức tạp: O(2^n) - Rất chậm!</span>
+                    </div>
+
+                    <h4>✅ Cách 2: Quy Hoạch Động (Bottom-up)</h4>
+                    <div class="code-block">
+<span class="keyword">int</span> <span class="function">fibonacci_dp</span>(<span class="keyword">int</span> n) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> n;
+    
+    <span class="keyword">int</span> dp[n + <span class="number">1</span>];
+    dp[<span class="number">0</span>] = <span class="number">0</span>;  <span class="comment">// Base case</span>
+    dp[<span class="number">1</span>] = <span class="number">1</span>;  <span class="comment">// Base case</span>
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i <= n; i++) {
+        dp[i] = dp[i - <span class="number">1</span>] + dp[i - <span class="number">2</span>];  <span class="comment">// Công thức truy hồi</span>
+    }
+    
+    <span class="keyword">return</span> dp[n];
+}
+<span class="comment">// Độ phức tạp: O(n) - Nhanh hơn rất nhiều!</span>
+                    </div>
+
+                    <h4>✅ Cách 3: Quy Hoạch Động (Tối ưu không gian)</h4>
+                    <div class="code-block">
+<span class="keyword">int</span> <span class="function">fibonacci_optimized</span>(<span class="keyword">int</span> n) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> n;
+    
+    <span class="keyword">int</span> prev2 = <span class="number">0</span>, prev1 = <span class="number">1</span>;
+    <span class="keyword">int</span> current;
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i <= n; i++) {
+        current = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = current;
+    }
+    
+    <span class="keyword">return</span> current;
+}
+<span class="comment">// Độ phức tạp: O(n) thời gian, O(1) không gian</span>
+                    </div>
+
+                    <p><strong>So sánh hiệu suất:</strong></p>
+                    <ul>
+                        <li>Đệ quy: F(40) mất vài giây, F(50) mất vài phút</li>
+                        <li>DP: F(40) và F(50) đều tính trong vài micro giây</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- PHẦN 2: BÀI TẬP -->
+            <section id="problems">
+                <h2>2. Bài Tập Quy Hoạch Động</h2>
+
+                <!-- BÀI 1: Best Time to Buy and Sell Stock I -->
+                <div class="problem">
+                    <h3>📈 Bài 1: Mua Bán Cổ Phiếu - Một Lần (Best Time to Buy and Sell Stock I)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một mảng giá cổ phiếu trong n ngày. Bạn chỉ được mua 1 lần và bán 1 lần. Tìm lợi nhuận tối đa có thể đạt được. Nếu không thể có lợi nhuận, trả về 0.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Xác định trạng thái: <code>dp[i]</code> = lợi nhuận tối đa khi bán vào ngày i</li>
+                            <li>Với mỗi ngày, cần biết giá mua thấp nhất từ đầu đến ngày đó</li>
+                            <li>Lợi nhuận tại ngày i = giá bán (prices[i]) - giá mua thấp nhất (minPrice)</li>
+                            <li>Khởi tạo: minPrice = prices[0], maxProfit = 0</li>
+                            <li>Duyệt qua từng ngày, cập nhật minPrice và maxProfit</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Gợi ý lập công thức:</strong>
+                        <p>Với mỗi ngày <code>i</code>:</p>
+                        <ul>
+                            <li>Cập nhật giá mua thấp nhất: <code>minPrice = min(minPrice, prices[i])</code></li>
+                            <li>Tính lợi nhuận nếu bán ngày i: <code>profit = prices[i] - minPrice</code></li>
+                            <li>Cập nhật lợi nhuận tối đa: <code>maxProfit = max(maxProfit, profit)</code></li>
+                        </ul>
+                        <p><strong>Công thức tổng quát:</strong></p>
+                        <p><code>minPrice = min(minPrice, prices[i])</code></p>
+                        <p><code>maxProfit = max(maxProfit, prices[i] - minPrice)</code></p>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>prices = [7, 1, 5, 3, 6, 4]</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>5</pre>
+                        <p><strong>Giải thích:</strong> Mua vào ngày 2 (giá = 1) và bán vào ngày 5 (giá = 6), lợi nhuận = 6 - 1 = 5</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code mẫu C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">maxProfit</span>(vector&lt;<span class="keyword">int</span>&gt;& prices) {
+    <span class="keyword">if</span> (prices.empty()) {
+        <span class="keyword">return</span> <span class="number">0</span>;
+    }
+    
+    <span class="keyword">int</span> minPrice = prices[<span class="number">0</span>];  <span class="comment">// Giá mua thấp nhất</span>
+    <span class="keyword">int</span> maxProfit = <span class="number">0</span>;  <span class="comment">// Lợi nhuận tối đa</span>
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i < prices.size(); i++) {
+        <span class="comment">// Cập nhật giá mua thấp nhất</span>
+        minPrice = min(minPrice, prices[i]);
+        
+        <span class="comment">// Tính lợi nhuận nếu bán vào ngày i</span>
+        <span class="keyword">int</span> profit = prices[i] - minPrice;
+        
+        <span class="comment">// Cập nhật lợi nhuận tối đa</span>
+        maxProfit = max(maxProfit, profit);
+    }
+    
+    <span class="keyword">return</span> maxProfit;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;<span class="keyword">int</span>&gt; prices = {<span class="number">7</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">4</span>};
+    cout << <span class="function">maxProfit</span>(prices) << endl;  <span class="comment">// Output: 5</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 2: Best Time to Buy and Sell Stock II -->
+                <div class="problem">
+                    <h3>💹 Bài 2: Mua Bán Cổ Phiếu - Nhiều Lần (Best Time to Buy and Sell Stock II)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một mảng giá cổ phiếu trong n ngày. Bạn có thể mua và bán nhiều lần, nhưng phải bán hết trước khi mua lại. Tìm lợi nhuận tối đa có thể đạt được.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Xác định trạng thái: <code>dp[i][0]</code> = lợi nhuận tối đa khi không nắm giữ cổ phiếu vào ngày i</li>
+                            <li><code>dp[i][1]</code> = lợi nhuận tối đa khi nắm giữ cổ phiếu vào ngày i</li>
+                            <li>Với mỗi ngày, có 2 trạng thái: đang nắm giữ hoặc không nắm giữ cổ phiếu</li>
+                            <li>Khởi tạo: <code>dp[0][0] = 0</code> (không nắm giữ), <code>dp[0][1] = -prices[0]</code> (mua vào ngày đầu)</li>
+                            <li>Duyệt qua từng ngày, cập nhật 2 trạng thái</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Gợi ý lập công thức:</strong>
+                        <p>Với mỗi ngày <code>i</code>:</p>
+                        <ul>
+                            <li><strong>Không nắm giữ cổ phiếu (dp[i][0]):</strong></li>
+                            <li>Giữ nguyên không nắm giữ: <code>dp[i-1][0]</code></li>
+                            <li>Bán cổ phiếu đang nắm giữ: <code>dp[i-1][1] + prices[i]</code></li>
+                            <li><code>dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])</code></li>
+                            <li><strong>Nắm giữ cổ phiếu (dp[i][1]):</strong></li>
+                            <li>Giữ nguyên cổ phiếu: <code>dp[i-1][1]</code></li>
+                            <li>Mua cổ phiếu mới: <code>dp[i-1][0] - prices[i]</code></li>
+                            <li><code>dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])</code></li>
+                        </ul>
+                        <p><strong>Kết quả:</strong> <code>dp[n-1][0]</code> (lợi nhuận tối đa khi không nắm giữ cổ phiếu vào ngày cuối)</p>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>prices = [7, 1, 5, 3, 6, 4]</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>7</pre>
+                        <p><strong>Giải thích:</strong> Mua vào ngày 2 (giá = 1) và bán vào ngày 3 (giá = 5), lợi nhuận = 4. Sau đó mua vào ngày 4 (giá = 3) và bán vào ngày 5 (giá = 6), lợi nhuận = 3. Tổng lợi nhuận = 4 + 3 = 7</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code mẫu C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">maxProfit</span>(vector&lt;<span class="keyword">int</span>&gt;& prices) {
+    <span class="keyword">int</span> n = prices.size();
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) {
+        <span class="keyword">return</span> <span class="number">0</span>;
+    }
+    
+    <span class="comment">// dp[i][0]: lợi nhuận tối đa khi không nắm giữ cổ phiếu vào ngày i</span>
+    <span class="comment">// dp[i][1]: lợi nhuận tối đa khi nắm giữ cổ phiếu vào ngày i</span>
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; dp(n, vector&lt;<span class="keyword">int</span>&gt;(<span class="number">2</span>, <span class="number">0</span>));
+    
+    <span class="comment">// Base case</span>
+    dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;  <span class="comment">// Không nắm giữ vào ngày đầu</span>
+    dp[<span class="number">0</span>][<span class="number">1</span>] = -prices[<span class="number">0</span>];  <span class="comment">// Mua vào ngày đầu</span>
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i < n; i++) {
+        <span class="comment">// Không nắm giữ: giữ nguyên hoặc bán cổ phiếu đang có</span>
+        dp[i][<span class="number">0</span>] = max(dp[i - <span class="number">1</span>][<span class="number">0</span>], dp[i - <span class="number">1</span>][<span class="number">1</span>] + prices[i]);
+        
+        <span class="comment">// Nắm giữ: giữ nguyên cổ phiếu hoặc mua cổ phiếu mới</span>
+        dp[i][<span class="number">1</span>] = max(dp[i - <span class="number">1</span>][<span class="number">1</span>], dp[i - <span class="number">1</span>][<span class="number">0</span>] - prices[i]);
+    }
+    
+    <span class="comment">// Kết quả: lợi nhuận tối đa khi không nắm giữ cổ phiếu vào ngày cuối</span>
+    <span class="keyword">return</span> dp[n - <span class="number">1</span>][<span class="number">0</span>];
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;<span class="keyword">int</span>&gt; prices = {<span class="number">7</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">4</span>};
+    cout << <span class="function">maxProfit</span>(prices) << endl;  <span class="comment">// Output: 7</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>📚 Tài liệu học tập Quy Hoạch Động | C++ Programming</p>
+        </footer>
+    </div>
+</body>
+</html>
+
