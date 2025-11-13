@@ -501,6 +501,158 @@
     <span class="keyword">return</span> <span class="number">0</span>;
 }</div>
                 </div>
+
+                <!-- BÀI 3: Làm bài tập điểm cao nhất -->
+                <div class="problem">
+                    <h3>📝 Bài 3: Làm Bài Tập Điểm Cao Nhất</h3>
+                    
+                    <p><strong>Đề bài:</strong> Bạn có n bài tập, mỗi bài tập có thời gian làm (time) và điểm số (score). Bạn chỉ có tổng thời gian T. Mỗi bài tập chỉ có thể làm 1 lần. Tìm tổng điểm cao nhất có thể đạt được.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Xác định trạng thái: <code>dp[i][t]</code> = điểm cao nhất khi xét đến bài tập i với thời gian còn lại t</li>
+                            <li>Với mỗi bài tập, có 2 lựa chọn: làm hoặc không làm</li>
+                            <li>Nếu làm: cần đủ thời gian và cộng thêm điểm</li>
+                            <li>Nếu không làm: giữ nguyên điểm hiện tại</li>
+                            <li>Khởi tạo: <code>dp[0][t] = 0</code> với mọi t (chưa làm bài nào)</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Gợi ý lập công thức:</strong>
+                        <p>Với mỗi bài tập <code>i</code> và thời gian <code>t</code>:</p>
+                        <ul>
+                            <li><strong>Không làm bài tập i:</strong> <code>dp[i][t] = dp[i-1][t]</code></li>
+                            <li><strong>Làm bài tập i:</strong> (chỉ khi <code>t >= time[i]</code>)</li>
+                            <li><code>dp[i][t] = max(dp[i-1][t], dp[i-1][t - time[i]] + score[i])</code></li>
+                        </ul>
+                        <p><strong>Công thức tổng quát:</strong></p>
+                        <p><code>dp[i][t] = max(dp[i-1][t], dp[i-1][t - time[i]] + score[i]) nếu t >= time[i]</code></p>
+                        <p><code>dp[i][t] = dp[i-1][t] nếu t < time[i]</code></p>
+                        <p><strong>Kết quả:</strong> <code>dp[n][T]</code> (điểm cao nhất với n bài tập và thời gian T)</p>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>n = 4
+time = [2, 3, 4, 5]
+score = [10, 15, 20, 25]
+T = 8</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>35</pre>
+                        <p><strong>Giải thích:</strong> Làm bài tập 2 (time=3, score=15) và bài tập 4 (time=5, score=25). Tổng thời gian = 3 + 5 = 8, tổng điểm = 15 + 25 = 35</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code mẫu C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">maxScore</span>(vector&lt;<span class="keyword">int</span>&gt;& time, vector&lt;<span class="keyword">int</span>&gt;& score, <span class="keyword">int</span> T) {
+    <span class="keyword">int</span> n = time.size();
+    
+    <span class="comment">// dp[t]: điểm cao nhất với thời gian t</span>
+    vector&lt;<span class="keyword">int</span>&gt; dp(T + <span class="number">1</span>, <span class="number">0</span>);
+    
+    <span class="comment">// Duyệt qua từng bài tập</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+        <span class="comment">// Duyệt ngược để tránh sử dụng kết quả đã cập nhật</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> t = T; t >= time[i]; t--) {
+            <span class="comment">// Lựa chọn: làm hoặc không làm bài tập i</span>
+            dp[t] = max(dp[t], dp[t - time[i]] + score[i]);
+        }
+    }
+    
+    <span class="keyword">return</span> dp[T];
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;<span class="keyword">int</span>&gt; time = {<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+    vector&lt;<span class="keyword">int</span>&gt; score = {<span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>, <span class="number">25</span>};
+    <span class="keyword">int</span> T = <span class="number">8</span>;
+    cout << <span class="function">maxScore</span>(time, score, T) << endl;  <span class="comment">// Output: 35</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 4: Bán món đồ được lãi cao nhất -->
+                <div class="problem">
+                    <h3>🛍️ Bài 4: Bán Món Đồ Được Lãi Cao Nhất</h3>
+                    
+                    <p><strong>Đề bài:</strong> Bạn có n món đồ, mỗi món đồ có trọng lượng (weight) và giá trị (value). Bạn có một túi với sức chứa tối đa W. Mỗi món đồ chỉ có thể bán 1 lần. Tìm tổng giá trị cao nhất có thể đạt được.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Xác định trạng thái: <code>dp[i][w]</code> = giá trị cao nhất khi xét đến món đồ i với trọng lượng còn lại w</li>
+                            <li>Với mỗi món đồ, có 2 lựa chọn: bán hoặc không bán</li>
+                            <li>Nếu bán: cần đủ sức chứa và cộng thêm giá trị</li>
+                            <li>Nếu không bán: giữ nguyên giá trị hiện tại</li>
+                            <li>Khởi tạo: <code>dp[0][w] = 0</code> với mọi w (chưa bán món nào)</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Gợi ý lập công thức:</strong>
+                        <p>Với mỗi món đồ <code>i</code> và trọng lượng <code>w</code>:</p>
+                        <ul>
+                            <li><strong>Không bán món đồ i:</strong> <code>dp[i][w] = dp[i-1][w]</code></li>
+                            <li><strong>Bán món đồ i:</strong> (chỉ khi <code>w >= weight[i]</code>)</li>
+                            <li><code>dp[i][w] = max(dp[i-1][w], dp[i-1][w - weight[i]] + value[i])</code></li>
+                        </ul>
+                        <p><strong>Công thức tổng quát:</strong></p>
+                        <p><code>dp[i][w] = max(dp[i-1][w], dp[i-1][w - weight[i]] + value[i]) nếu w >= weight[i]</code></p>
+                        <p><code>dp[i][w] = dp[i-1][w] nếu w < weight[i]</code></p>
+                        <p><strong>Kết quả:</strong> <code>dp[n][W]</code> (giá trị cao nhất với n món đồ và sức chứa W)</p>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>n = 4
+weight = [2, 3, 4, 5]
+value = [10, 20, 30, 40]
+W = 8</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>60</pre>
+                        <p><strong>Giải thích:</strong> Bán món đồ 3 (weight=4, value=30) và món đồ 4 (weight=5, value=40). Tổng trọng lượng = 4 + 5 = 9 > 8 (không hợp lệ). Bán món đồ 2 (weight=3, value=20) và món đồ 4 (weight=5, value=40). Tổng trọng lượng = 3 + 5 = 8, tổng giá trị = 20 + 40 = 60</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code mẫu C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">maxValue</span>(vector&lt;<span class="keyword">int</span>&gt;& weight, vector&lt;<span class="keyword">int</span>&gt;& value, <span class="keyword">int</span> W) {
+    <span class="keyword">int</span> n = weight.size();
+    
+    <span class="comment">// dp[w]: giá trị cao nhất với trọng lượng w</span>
+    vector&lt;<span class="keyword">int</span>&gt; dp(W + <span class="number">1</span>, <span class="number">0</span>);
+    
+    <span class="comment">// Duyệt qua từng món đồ</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+        <span class="comment">// Duyệt ngược để tránh sử dụng kết quả đã cập nhật</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> w = W; w >= weight[i]; w--) {
+            <span class="comment">// Lựa chọn: bán hoặc không bán món đồ i</span>
+            dp[w] = max(dp[w], dp[w - weight[i]] + value[i]);
+        }
+    }
+    
+    <span class="keyword">return</span> dp[W];
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;<span class="keyword">int</span>&gt; weight = {<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+    vector&lt;<span class="keyword">int</span>&gt; value = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>};
+    <span class="keyword">int</span> W = <span class="number">8</span>;
+    cout << <span class="function">maxValue</span>(weight, value, W) << endl;  <span class="comment">// Output: 60</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
             </section>
         </div>
 
