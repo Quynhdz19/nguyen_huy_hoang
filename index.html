@@ -653,6 +653,187 @@ W = 8</pre>
     <span class="keyword">return</span> <span class="number">0</span>;
 }</div>
                 </div>
+
+                <!-- BÀI 5: Longest Common Subsequence -->
+                <div class="problem">
+                    <h3>🔗 Bài 5: Chuỗi Con Chung Dài Nhất (Longest Common Subsequence - LCS)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho hai chuỗi s1 và s2. Tìm độ dài của chuỗi con chung dài nhất (LCS). Chuỗi con không cần liên tiếp, chỉ cần giữ nguyên thứ tự.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Xác định trạng thái: <code>dp[i][j]</code> = độ dài LCS của s1[0..i-1] và s2[0..j-1]</li>
+                            <li>Với mỗi cặp ký tự, có 2 trường hợp:</li>
+                            <li>Nếu s1[i-1] == s2[j-1]: ký tự này thuộc LCS, cộng thêm 1</li>
+                            <li>Nếu s1[i-1] != s2[j-1]: lấy max của 2 trường hợp (bỏ ký tự s1 hoặc bỏ ký tự s2)</li>
+                            <li>Khởi tạo: <code>dp[0][j] = 0</code> và <code>dp[i][0] = 0</code> (chuỗi rỗng)</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Gợi ý lập công thức:</strong>
+                        <p>Với mỗi vị trí <code>i</code> trong s1 và <code>j</code> trong s2:</p>
+                        <ul>
+                            <li><strong>Nếu s1[i-1] == s2[j-1]:</strong></li>
+                            <li><code>dp[i][j] = dp[i-1][j-1] + 1</code> (ký tự này thuộc LCS)</li>
+                            <li><strong>Nếu s1[i-1] != s2[j-1]:</strong></li>
+                            <li><code>dp[i][j] = max(dp[i-1][j], dp[i][j-1])</code> (bỏ ký tự ở s1 hoặc s2)</li>
+                        </ul>
+                        <p><strong>Công thức tổng quát:</strong></p>
+                        <p><code>dp[i][j] = dp[i-1][j-1] + 1</code> nếu <code>s1[i-1] == s2[j-1]</code></p>
+                        <p><code>dp[i][j] = max(dp[i-1][j], dp[i][j-1])</code> nếu <code>s1[i-1] != s2[j-1]</code></p>
+                        <p><strong>Kết quả:</strong> <code>dp[m][n]</code> (m, n là độ dài của s1, s2)</p>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>s1 = "ABCDGH"
+s2 = "AEDFHR"</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>3</pre>
+                        <p><strong>Giải thích:</strong> LCS là "ADH" với độ dài 3. Các ký tự A, D, H xuất hiện trong cả hai chuỗi và giữ nguyên thứ tự.</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code mẫu C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;string&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">longestCommonSubsequence</span>(string s1, string s2) {
+    <span class="keyword">int</span> m = s1.length();
+    <span class="keyword">int</span> n = s2.length();
+    
+    <span class="comment">// dp[i][j]: độ dài LCS của s1[0..i-1] và s2[0..j-1]</span>
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; dp(m + <span class="number">1</span>, vector&lt;<span class="keyword">int</span>&gt;(n + <span class="number">1</span>, <span class="number">0</span>));
+    
+    <span class="comment">// Base case: dp[0][j] = 0, dp[i][0] = 0 (chuỗi rỗng)</span>
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= m; i++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j <= n; j++) {
+            <span class="keyword">if</span> (s1[i - <span class="number">1</span>] == s2[j - <span class="number">1</span>]) {
+                <span class="comment">// Ký tự khớp, thêm vào LCS</span>
+                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>;
+            } <span class="keyword">else</span> {
+                <span class="comment">// Ký tự không khớp, lấy max của 2 trường hợp</span>
+                dp[i][j] = max(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]);
+            }
+        }
+    }
+    
+    <span class="keyword">return</span> dp[m][n];
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    string s1 = <span class="string">"ABCDGH"</span>;
+    string s2 = <span class="string">"AEDFHR"</span>;
+    cout << <span class="function">longestCommonSubsequence</span>(s1, s2) << endl;  <span class="comment">// Output: 3</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 6: Edit Distance -->
+                <div class="problem">
+                    <h3>✏️ Bài 6: Khoảng Cách Chỉnh Sửa (Edit Distance - Levenshtein Distance)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho hai chuỗi word1 và word2. Tìm số thao tác tối thiểu để chuyển word1 thành word2. Các thao tác được phép: chèn ký tự, xóa ký tự, thay thế ký tự.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Xác định trạng thái: <code>dp[i][j]</code> = số thao tác tối thiểu để chuyển word1[0..i-1] thành word2[0..j-1]</li>
+                            <li>Với mỗi cặp ký tự, có 3 trường hợp:</li>
+                            <li>Nếu word1[i-1] == word2[j-1]: không cần thao tác, giữ nguyên</li>
+                            <li>Nếu word1[i-1] != word2[j-1]: chọn thao tác tối ưu nhất trong 3 thao tác (chèn, xóa, thay thế)</li>
+                            <li>Khởi tạo: <code>dp[0][j] = j</code> (chèn j ký tự) và <code>dp[i][0] = i</code> (xóa i ký tự)</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Gợi ý lập công thức:</strong>
+                        <p>Với mỗi vị trí <code>i</code> trong word1 và <code>j</code> trong word2:</p>
+                        <ul>
+                            <li><strong>Nếu word1[i-1] == word2[j-1]:</strong></li>
+                            <li><code>dp[i][j] = dp[i-1][j-1]</code> (không cần thao tác)</li>
+                            <li><strong>Nếu word1[i-1] != word2[j-1]:</strong></li>
+                            <li>Chèn: <code>dp[i][j-1] + 1</code> (chèn word2[j-1] vào word1)</li>
+                            <li>Xóa: <code>dp[i-1][j] + 1</code> (xóa word1[i-1])</li>
+                            <li>Thay thế: <code>dp[i-1][j-1] + 1</code> (thay word1[i-1] bằng word2[j-1])</li>
+                            <li><code>dp[i][j] = min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1]) + 1</code></li>
+                        </ul>
+                        <p><strong>Công thức tổng quát:</strong></p>
+                        <p><code>dp[i][j] = dp[i-1][j-1]</code> nếu <code>word1[i-1] == word2[j-1]</code></p>
+                        <p><code>dp[i][j] = min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1]) + 1</code> nếu <code>word1[i-1] != word2[j-1]</code></p>
+                        <p><strong>Kết quả:</strong> <code>dp[m][n]</code> (m, n là độ dài của word1, word2)</p>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>word1 = "horse"
+word2 = "ros"</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>3</pre>
+                        <p><strong>Giải thích:</strong> 
+                        <ul>
+                            <li>horse → rorse (thay 'h' bằng 'r')</li>
+                            <li>rorse → rose (xóa 'r')</li>
+                            <li>rose → ros (xóa 'e')</li>
+                        </ul>
+                        Tổng cộng 3 thao tác.</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code mẫu C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;string&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">minDistance</span>(string word1, string word2) {
+    <span class="keyword">int</span> m = word1.length();
+    <span class="keyword">int</span> n = word2.length();
+    
+    <span class="comment">// dp[i][j]: số thao tác tối thiểu để chuyển word1[0..i-1] thành word2[0..j-1]</span>
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; dp(m + <span class="number">1</span>, vector&lt;<span class="keyword">int</span>&gt;(n + <span class="number">1</span>, <span class="number">0</span>));
+    
+    <span class="comment">// Base case</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i <= m; i++) {
+        dp[i][<span class="number">0</span>] = i;  <span class="comment">// Xóa i ký tự từ word1</span>
+    }
+    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j <= n; j++) {
+        dp[<span class="number">0</span>][j] = j;  <span class="comment">// Chèn j ký tự vào word1</span>
+    }
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= m; i++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j <= n; j++) {
+            <span class="keyword">if</span> (word1[i - <span class="number">1</span>] == word2[j - <span class="number">1</span>]) {
+                <span class="comment">// Ký tự khớp, không cần thao tác</span>
+                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>];
+            } <span class="keyword">else</span> {
+                <span class="comment">// Chọn thao tác tối ưu nhất: chèn, xóa, hoặc thay thế</span>
+                dp[i][j] = <span class="number">1</span> + min({
+                    dp[i][j - <span class="number">1</span>],      <span class="comment">// Chèn</span>
+                    dp[i - <span class="number">1</span>][j],      <span class="comment">// Xóa</span>
+                    dp[i - <span class="number">1</span>][j - <span class="number">1</span>]  <span class="comment">// Thay thế</span>
+                });
+            }
+        }
+    }
+    
+    <span class="keyword">return</span> dp[m][n];
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    string word1 = <span class="string">"horse"</span>;
+    string word2 = <span class="string">"ros"</span>;
+    cout << <span class="function">minDistance</span>(word1, word2) << endl;  <span class="comment">// Output: 3</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
             </section>
         </div>
 
