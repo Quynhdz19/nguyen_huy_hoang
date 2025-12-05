@@ -1505,6 +1505,165 @@ word2 = "ros"</pre>
     <span class="keyword">return</span> <span class="number">0</span>;
 }</div>
                 </div>
+
+                <!-- BÀI 7: Mua Vé Tham Quan -->
+                <div class="problem">
+                    <h3>🎫 Bài 7: Mua Vé Tham Quan Di Tích</h3>
+                    
+                    <p><strong>Đề bài:</strong> Có m loại vé, loại vé thứ i có giá a[i] và hiệu lực b[i] ngày (tính cả ngày mua). Có T ngày khuyến mãi (giảm 50% giá vé). Buba muốn tham quan trong n ngày. Tìm tổng số tiền ít nhất Buba cần chi để mua vé.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Sắp xếp các ngày tham quan theo thứ tự tăng dần</li>
+                            <li>Dùng quy hoạch động: dp[i] = chi phí tối thiểu để phủ từ ngày đầu đến ngày tham quan thứ i</li>
+                            <li>Với mỗi ngày tham quan i, thử mua tất cả các loại vé tại tất cả các ngày có thể</li>
+                            <li>Nếu mua vé loại j vào ngày k (ngày k <= ngày tham quan i và vé phủ đến ngày i):</li>
+                            <li>Giá vé = a[j] nếu ngày k không phải ngày khuyến mãi, = a[j]/2 nếu là ngày khuyến mãi</li>
+                            <li>dp[i] = min(dp[i], dp[k-1] + giá_vé) với k là ngày mua vé</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Thuật toán:</strong>
+                        <ol>
+                            <li>Sắp xếp các ngày tham quan d[] tăng dần</li>
+                            <li>Đánh dấu các ngày khuyến mãi</li>
+                            <li>Khởi tạo dp[0] = 0 (chưa có ngày nào cần phủ)</li>
+                            <li>Với mỗi ngày tham quan i (từ 1 đến n):</li>
+                            <li>dp[i] = INF (giá trị lớn)</li>
+                            <li>Thử mua mỗi loại vé j:</li>
+                            <li>Tìm ngày mua vé k sao cho: k <= d[i] và k + b[j] - 1 >= d[i]</li>
+                            <li>Giá vé = a[j] (nếu k không khuyến mãi) hoặc a[j]/2 (nếu k khuyến mãi)</li>
+                            <li>dp[i] = min(dp[i], dp[k-1] + giá_vé)</li>
+                        </ol>
+                        <p><strong>Kết quả:</strong> dp[n] (chi phí tối thiểu để phủ tất cả n ngày)</p>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>m = 2 (số loại vé)
+a = [100, 200] (giá vé)
+b = [3, 5] (hiệu lực)
+
+T = 1 (số ngày khuyến mãi)
+c = [2] (ngày khuyến mãi)
+
+n = 3 (số ngày tham quan)
+d = [1, 3, 5] (các ngày tham quan)</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>150</pre>
+                        <p><strong>Giải thích:</strong> 
+                        <ul>
+                            <li>Mua vé loại 1 (giá 100, hiệu lực 3 ngày) vào ngày 1 (không khuyến mãi) → phủ ngày 1, 2, 3 → giá 100</li>
+                            <li>Mua vé loại 1 (giá 100, hiệu lực 3 ngày) vào ngày 2 (khuyến mãi 50%) → phủ ngày 2, 3, 4 → giá 50</li>
+                            <li>Mua vé loại 2 (giá 200, hiệu lực 5 ngày) vào ngày 1 → phủ ngày 1-5 → giá 200</li>
+                            <li>Giải pháp tối ưu: Mua vé loại 1 vào ngày 2 (giá 50) phủ ngày 2,3,4 và mua vé loại 1 vào ngày 5 (giá 100) phủ ngày 5 → Tổng: 150</li>
+                        </ul>
+                        </p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code mẫu C++ - Dễ hiểu</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;climits&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">long long</span> <span class="function">minCost</span>(vector&lt;<span class="keyword">int</span>&gt;& a, vector&lt;<span class="keyword">int</span>&gt;& b, 
+                vector&lt;<span class="keyword">int</span>&gt;& c, vector&lt;<span class="keyword">int</span>&gt;& d) {
+    <span class="keyword">int</span> m = a.size();  <span class="comment">// Số loại vé</span>
+    <span class="keyword">int</span> T = c.size();  <span class="comment">// Số ngày khuyến mãi</span>
+    <span class="keyword">int</span> n = d.size();  <span class="comment">// Số ngày tham quan</span>
+    
+    <span class="comment">// Sắp xếp các ngày tham quan tăng dần</span>
+    sort(d.begin(), d.end());
+    
+    <span class="comment">// Đánh dấu các ngày khuyến mãi</span>
+    <span class="keyword">int</span> maxDay = d[n - <span class="number">1</span>];
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < T; i++) {
+        maxDay = max(maxDay, c[i]);
+    }
+    vector&lt;<span class="keyword">bool</span>&gt; isPromo(maxDay + <span class="number">1</span>, <span class="keyword">false</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < T; i++) {
+        isPromo[c[i]] = <span class="keyword">true</span>;
+    }
+    
+    <span class="comment">// dp[i]: chi phí tối thiểu để phủ từ ngày đầu đến ngày tham quan thứ i (0-indexed)</span>
+    <span class="comment">// dp[0] = 0 (chưa có ngày nào cần phủ)</span>
+    vector&lt;<span class="keyword">long long</span>&gt; dp(n + <span class="number">1</span>, LLONG_MAX);
+    dp[<span class="number">0</span>] = <span class="number">0</span>;
+    
+    <span class="comment">// Với mỗi ngày tham quan i (từ 1 đến n)</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= n; i++) {
+        <span class="keyword">int</span> currentDay = d[i - <span class="number">1</span>];  <span class="comment">// Ngày tham quan thứ i</span>
+        
+        <span class="comment">// Thử mua mỗi loại vé</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j < m; j++) {
+            <span class="keyword">int</span> price = a[j];        <span class="comment">// Giá vé loại j</span>
+            <span class="keyword">int</span> duration = b[j];     <span class="comment">// Hiệu lực vé loại j</span>
+            
+            <span class="comment">// Tìm ngày mua vé k sao cho vé phủ được ngày currentDay</span>
+            <span class="comment">// Điều kiện: k <= currentDay và k + duration - 1 >= currentDay</span>
+            <span class="comment">// Tức là: k >= currentDay - duration + 1 và k <= currentDay</span>
+            
+            <span class="keyword">int</span> minBuyDay = max(<span class="number">1</span>, currentDay - duration + <span class="number">1</span>);
+            <span class="keyword">int</span> maxBuyDay = currentDay;
+            
+            <span class="comment">// Thử mua vé vào mỗi ngày từ minBuyDay đến maxBuyDay</span>
+            <span class="keyword">for</span> (<span class="keyword">int</span> buyDay = minBuyDay; buyDay <= maxBuyDay; buyDay++) {
+                <span class="comment">// Tính giá vé (có khuyến mãi hay không)</span>
+                <span class="keyword">long long</span> ticketPrice = price;
+                <span class="keyword">if</span> (buyDay <= maxDay && isPromo[buyDay]) {
+                    ticketPrice = price / <span class="number">2</span>;  <span class="comment">// Giảm 50%</span>
+                }
+                
+                <span class="comment">// Tìm ngày tham quan cuối cùng được phủ bởi vé này</span>
+                <span class="keyword">int</span> lastCoveredDay = buyDay + duration - <span class="number">1</span>;
+                
+                <span class="comment">// Tìm chỉ số ngày tham quan cuối cùng được phủ</span>
+                <span class="keyword">int</span> lastCoveredIdx = <span class="number">0</span>;
+                <span class="keyword">for</span> (<span class="keyword">int</span> idx = i - <span class="number">1</span>; idx < n; idx++) {
+                    <span class="keyword">if</span> (d[idx] <= lastCoveredDay) {
+                        lastCoveredIdx = idx + <span class="number">1</span>;
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">break</span>;
+                    }
+                }
+                
+                <span class="comment">// Tìm ngày tham quan đầu tiên trước ngày mua vé</span>
+                <span class="keyword">int</span> prevIdx = <span class="number">0</span>;
+                <span class="keyword">for</span> (<span class="keyword">int</span> idx = <span class="number">0</span>; idx < n; idx++) {
+                    <span class="keyword">if</span> (d[idx] < buyDay) {
+                        prevIdx = idx + <span class="number">1</span>;
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">break</span>;
+                    }
+                }
+                
+                <span class="comment">// Cập nhật dp[lastCoveredIdx] = min(dp[lastCoveredIdx], dp[prevIdx] + ticketPrice)</span>
+                <span class="keyword">if</span> (dp[prevIdx] != LLONG_MAX) {
+                    dp[lastCoveredIdx] = min(dp[lastCoveredIdx], dp[prevIdx] + ticketPrice);
+                }
+            }
+        }
+    }
+    
+    <span class="keyword">return</span> dp[n];
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="comment">// Ví dụ</span>
+    vector&lt;<span class="keyword">int</span>&gt; a = {<span class="number">100</span>, <span class="number">200</span>};  <span class="comment">// Giá vé</span>
+    vector&lt;<span class="keyword">int</span>&gt; b = {<span class="number">3</span>, <span class="number">5</span>};      <span class="comment">// Hiệu lực</span>
+    vector&lt;<span class="keyword">int</span>&gt; c = {<span class="number">2</span>};          <span class="comment">// Ngày khuyến mãi</span>
+    vector&lt;<span class="keyword">int</span>&gt; d = {<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>};  <span class="comment">// Ngày tham quan</span>
+    
+    cout << <span class="function">minCost</span>(a, b, c, d) << endl;
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
             </section>
         </div>
 
