@@ -2095,6 +2095,332 @@ vector&lt;<span class="keyword">bool</span>&gt; visited;        <span class="com
 }</div>
                 </div>
             </section>
+
+            <section id="practice-problems">
+                <h2>4. Bài Tập Thực Hành</h2>
+
+                <!-- BÀI 1: SET, MAP -->
+                <div class="problem">
+                    <h3>📝 Bài 1: Đếm Số Lượng Phần Tử Duy Nhất (SET, MAP)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một mảng số nguyên. Đếm số lượng phần tử xuất hiện đúng 1 lần trong mảng.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Dùng MAP để đếm số lần xuất hiện của mỗi phần tử</li>
+                            <li>Duyệt qua map, đếm số phần tử có giá trị = 1</li>
+                            <li>Hoặc dùng SET để lưu các phần tử đã xuất hiện</li>
+                        </ul>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>arr = [1, 2, 3, 2, 4, 1, 5]</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>3</pre>
+                        <p><strong>Giải thích:</strong> Các phần tử xuất hiện đúng 1 lần: 3, 4, 5</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Dùng MAP</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;map&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">countUnique</span>(vector&lt;<span class="keyword">int</span>&gt;& arr) {
+    map&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; countMap;
+    
+    <span class="comment">// Đếm số lần xuất hiện</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> num : arr) {
+        countMap[num]++;
+    }
+    
+    <span class="comment">// Đếm số phần tử xuất hiện đúng 1 lần</span>
+    <span class="keyword">int</span> result = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span>& p : countMap) {
+        <span class="keyword">if</span> (p.second == <span class="number">1</span>) {
+            result++;
+        }
+    }
+    
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;<span class="keyword">int</span>&gt; arr = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>};
+    cout << <span class="function">countUnique</span>(arr) << endl;  <span class="comment">// Output: 3</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 2: Binary Search -->
+                <div class="problem">
+                    <h3>🔍 Bài 2: Tìm Vị Trí Chèn (Binary Search)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một mảng đã sắp xếp và một giá trị target. Tìm vị trí để chèn target vào mảng sao cho mảng vẫn được sắp xếp. Nếu target đã có trong mảng, trả về vị trí của nó.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Dùng Binary Search để tìm vị trí</li>
+                            <li>Nếu tìm thấy target → return vị trí</li>
+                            <li>Nếu không tìm thấy → return vị trí chèn (left hoặc right + 1)</li>
+                        </ul>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu 1:</strong>
+                        <pre>arr = [1, 3, 5, 6]
+target = 5</pre>
+                        <strong>📤 Output mẫu 1:</strong>
+                        <pre>2</pre>
+
+                        <strong>📥 Input mẫu 2:</strong>
+                        <pre>arr = [1, 3, 5, 6]
+target = 2</pre>
+                        <strong>📤 Output mẫu 2:</strong>
+                        <pre>1</pre>
+                        <p><strong>Giải thích:</strong> Chèn 2 vào vị trí 1 để mảng vẫn sắp xếp: [1, 2, 3, 5, 6]</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Binary Search</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">searchInsert</span>(vector&lt;<span class="keyword">int</span>&gt;& arr, <span class="keyword">int</span> target) {
+    <span class="keyword">int</span> left = <span class="number">0</span>;
+    <span class="keyword">int</span> right = arr.size() - <span class="number">1</span>;
+    
+    <span class="keyword">while</span> (left <= right) {
+        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;
+        
+        <span class="keyword">if</span> (arr[mid] == target) {
+            <span class="keyword">return</span> mid;  <span class="comment">// Tìm thấy</span>
+        } <span class="keyword">else</span> <span class="keyword">if</span> (arr[mid] < target) {
+            left = mid + <span class="number">1</span>;
+        } <span class="keyword">else</span> {
+            right = mid - <span class="number">1</span>;
+        }
+    }
+    
+    <span class="comment">// Không tìm thấy, return vị trí chèn (left)</span>
+    <span class="keyword">return</span> left;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;<span class="keyword">int</span>&gt; arr = {<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>};
+    cout << <span class="function">searchInsert</span>(arr, <span class="number">5</span>) << endl;  <span class="comment">// Output: 2</span>
+    cout << <span class="function">searchInsert</span>(arr, <span class="number">2</span>) << endl;  <span class="comment">// Output: 1</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 3: DFS -->
+                <div class="problem">
+                    <h3>🌳 Bài 3: Tìm Đường Đi Trong Đồ Thị (DFS)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một đồ thị vô hướng và hai đỉnh start, end. Kiểm tra xem có đường đi từ start đến end không. Nếu có, in ra đường đi.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Dùng DFS để duyệt từ start</li>
+                            <li>Lưu đường đi bằng cách lưu parent của mỗi đỉnh</li>
+                            <li>Khi đến được end, truy vết ngược lại để in đường đi</li>
+                        </ul>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>Đồ thị: 0-1-2, 0-3, 3-4
+start = 0, end = 4</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>true
+Đường đi: 0 -> 3 -> 4</pre>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - DFS tìm đường đi</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;stack&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; graph;
+vector&lt;<span class="keyword">bool</span>&gt; visited;
+vector&lt;<span class="keyword">int</span>&gt; parent;
+
+<span class="keyword">bool</span> <span class="function">dfs</span>(<span class="keyword">int</span> node, <span class="keyword">int</span> end) {
+    visited[node] = <span class="keyword">true</span>;
+    
+    <span class="keyword">if</span> (node == end) {
+        <span class="keyword">return</span> <span class="keyword">true</span>;  <span class="comment">// Tìm thấy</span>
+    }
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> neighbor : graph[node]) {
+        <span class="keyword">if</span> (!visited[neighbor]) {
+            parent[neighbor] = node;
+            <span class="keyword">if</span> (<span class="function">dfs</span>(neighbor, end)) {
+                <span class="keyword">return</span> <span class="keyword">true</span>;
+            }
+        }
+    }
+    
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}
+
+<span class="keyword">void</span> <span class="function">printPath</span>(<span class="keyword">int</span> start, <span class="keyword">int</span> end) {
+    <span class="keyword">if</span> (parent[end] == -<span class="number">1</span> && end != start) {
+        cout << <span class="string">"Không có đường đi"</span> << endl;
+        <span class="keyword">return</span>;
+    }
+    
+    <span class="comment">// Truy vết đường đi</span>
+    stack&lt;<span class="keyword">int</span>&gt; path;
+    <span class="keyword">int</span> current = end;
+    
+    <span class="keyword">while</span> (current != -<span class="number">1</span>) {
+        path.push(current);
+        current = parent[current];
+    }
+    
+    <span class="comment">// In đường đi</span>
+    cout << <span class="string">"Đường đi: "</span>;
+    <span class="keyword">while</span> (!path.empty()) {
+        cout << path.top();
+        path.pop();
+        <span class="keyword">if</span> (!path.empty()) cout << <span class="string">" -> "</span>;
+    }
+    cout << endl;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> n = <span class="number">5</span>;
+    graph.resize(n);
+    visited.resize(n, <span class="keyword">false</span>);
+    parent.resize(n, -<span class="number">1</span>);
+    
+    <span class="comment">// Tạo đồ thị</span>
+    graph[<span class="number">0</span>].push_back(<span class="number">1</span>);
+    graph[<span class="number">0</span>].push_back(<span class="number">3</span>);
+    graph[<span class="number">1</span>].push_back(<span class="number">2</span>);
+    graph[<span class="number">3</span>].push_back(<span class="number">4</span>);
+    
+    <span class="keyword">int</span> start = <span class="number">0</span>, end = <span class="number">4</span>;
+    
+    <span class="keyword">if</span> (<span class="function">dfs</span>(start, end)) {
+        cout << <span class="string">"true"</span> << endl;
+        <span class="function">printPath</span>(start, end);
+    } <span class="keyword">else</span> {
+        cout << <span class="string">"false"</span> << endl;
+    }
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 4: Shortest Path -->
+                <div class="problem">
+                    <h3>🛣️ Bài 4: Tìm Đường Đi Ngắn Nhất (BFS/Dijkstra)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một đồ thị có trọng số và hai đỉnh start, end. Tìm đường đi ngắn nhất từ start đến end và in ra độ dài đường đi.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Dùng Dijkstra để tìm đường đi ngắn nhất</li>
+                            <li>Dùng priority queue để luôn xử lý đỉnh có khoảng cách nhỏ nhất</li>
+                            <li>Cập nhật khoảng cách đến các đỉnh kề</li>
+                        </ul>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>Đồ thị: 
+0 -> 1 (trọng số 4)
+0 -> 2 (trọng số 1)
+2 -> 1 (trọng số 2)
+2 -> 3 (trọng số 5)
+1 -> 3 (trọng số 1)
+start = 0, end = 3</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>4</pre>
+                        <p><strong>Giải thích:</strong> Đường đi ngắn nhất: 0 -> 2 -> 1 -> 3 với tổng trọng số = 1 + 2 + 1 = 4</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Dijkstra</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;queue&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;climits&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">dijkstra</span>(vector&lt;vector&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;&gt;& graph, <span class="keyword">int</span> start, <span class="keyword">int</span> end) {
+    <span class="keyword">int</span> n = graph.size();
+    vector&lt;<span class="keyword">int</span>&gt; dist(n, INT_MAX);
+    dist[start] = <span class="number">0</span>;
+    
+    <span class="comment">// Priority queue: (khoảng cách, đỉnh)</span>
+    priority_queue&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;, 
+                   vector&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;, 
+                   greater&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;&gt; pq;
+    pq.push({<span class="number">0</span>, start});
+    
+    <span class="keyword">while</span> (!pq.empty()) {
+        <span class="keyword">int</span> u = pq.top().second;
+        <span class="keyword">int</span> d = pq.top().first;
+        pq.pop();
+        
+        <span class="comment">// Nếu khoảng cách đã được cập nhật tốt hơn, bỏ qua</span>
+        <span class="keyword">if</span> (d > dist[u]) <span class="keyword">continue</span>;
+        
+        <span class="comment">// Nếu đến đích, return</span>
+        <span class="keyword">if</span> (u == end) <span class="keyword">return</span> dist[u];
+        
+        <span class="comment">// Duyệt các đỉnh kề</span>
+        <span class="keyword">for</span> (<span class="keyword">auto</span>& edge : graph[u]) {
+            <span class="keyword">int</span> v = edge.first;   <span class="comment">// Đỉnh kề</span>
+            <span class="keyword">int</span> w = edge.second;  <span class="comment">// Trọng số cạnh</span>
+            
+            <span class="comment">// Nếu tìm thấy đường đi ngắn hơn</span>
+            <span class="keyword">if</span> (dist[u] + w < dist[v]) {
+                dist[v] = dist[u] + w;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+    
+    <span class="keyword">return</span> -<span class="number">1</span>;  <span class="comment">// Không tìm thấy đường đi</span>
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> n = <span class="number">4</span>;
+    vector&lt;vector&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;&gt; graph(n);
+    
+    <span class="comment">// Thêm cạnh (đỉnh, trọng số)</span>
+    graph[<span class="number">0</span>].push_back({<span class="number">1</span>, <span class="number">4</span>});
+    graph[<span class="number">0</span>].push_back({<span class="number">2</span>, <span class="number">1</span>});
+    graph[<span class="number">2</span>].push_back({<span class="number">1</span>, <span class="number">2</span>});
+    graph[<span class="number">2</span>].push_back({<span class="number">3</span>, <span class="number">5</span>});
+    graph[<span class="number">1</span>].push_back({<span class="number">3</span>, <span class="number">1</span>});
+    
+    <span class="keyword">int</span> start = <span class="number">0</span>, end = <span class="number">3</span>;
+    <span class="keyword">int</span> shortest = <span class="function">dijkstra</span>(graph, start, end);
+    
+    <span class="keyword">if</span> (shortest != -<span class="number">1</span>) {
+        cout << <span class="string">"Đường đi ngắn nhất: "</span> << shortest << endl;  <span class="comment">// Output: 4</span>
+    } <span class="keyword">else</span> {
+        cout << <span class="string">"Không tìm thấy đường đi"</span> << endl;
+    }
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+            </section>
         </div>
 
         <footer>
