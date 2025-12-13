@@ -254,6 +254,7 @@
             <button class="tab-button" onclick="openTab(event, 'greedy')">🎯 Thuật Toán Tham Lam</button>
             <button class="tab-button active" onclick="openTab(event, 'dp')">💡 Thuật Toán Quy Hoạch Động</button>
             <button class="tab-button" onclick="openTab(event, 'ds')">📚 Cấu Trúc Dữ Liệu & Giải Thuật</button>
+            <button class="tab-button" onclick="openTab(event, 'practice')">📝 Bài Tập</button>
         </div>
 
         <!-- TAB: THUẬT TOÁN THAM LAM -->
@@ -1767,6 +1768,179 @@ d = [1, 3, 5] (các ngày tham quan)</pre>
     <span class="keyword">return</span> <span class="number">0</span>;
 }</div>
                 </div>
+
+                <!-- Con trỏ và Linked List -->
+                <div class="card">
+                    <h3>🔗 Con Trỏ và Linked List (Danh Sách Liên Kết)</h3>
+                    
+                    <h4>📌 Con Trỏ (Pointer)</h4>
+                    <p><strong>Con trỏ</strong> là biến lưu trữ địa chỉ của biến khác trong bộ nhớ.</p>
+                    
+                    <p><strong>Đặc điểm:</strong></p>
+                    <ul>
+                        <li>Lưu địa chỉ bộ nhớ, không lưu giá trị trực tiếp</li>
+                        <li>Cho phép truy cập và thao tác với bộ nhớ động</li>
+                        <li>Dùng <code>*</code> để lấy giá trị tại địa chỉ (dereference)</li>
+                        <li>Dùng <code>&</code> để lấy địa chỉ của biến (address-of)</li>
+                    </ul>
+
+                    <div class="code-block"><span class="comment">// Ví dụ về Con trỏ trong C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> x = <span class="number">10</span>;
+    <span class="keyword">int</span>* ptr = &x;  <span class="comment">// ptr lưu địa chỉ của x</span>
+    
+    cout << <span class="string">"Giá trị của x: "</span> << x << endl;           <span class="comment">// Output: 10</span>
+    cout << <span class="string">"Địa chỉ của x: "</span> << &x << endl;         <span class="comment">// Địa chỉ bộ nhớ</span>
+    cout << <span class="string">"Giá trị ptr trỏ đến: "</span> << *ptr << endl;  <span class="comment">// Output: 10</span>
+    
+    <span class="comment">// Thay đổi giá trị qua con trỏ</span>
+    *ptr = <span class="number">20</span>;
+    cout << <span class="string">"Giá trị của x sau khi thay đổi: "</span> << x << endl;  <span class="comment">// Output: 20</span>
+    
+    <span class="comment">// Cấp phát bộ nhớ động</span>
+    <span class="keyword">int</span>* dynamic = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">30</span>);
+    cout << <span class="string">"Giá trị động: "</span> << *dynamic << endl;
+    <span class="keyword">delete</span> dynamic;  <span class="comment">// Giải phóng bộ nhớ</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+
+                    <h4>🔗 Linked List (Danh Sách Liên Kết)</h4>
+                    <p><strong>Linked List</strong> là cấu trúc dữ liệu gồm các node được liên kết với nhau bằng con trỏ.</p>
+                    
+                    <p><strong>Đặc điểm:</strong></p>
+                    <ul>
+                        <li>Mỗi node chứa dữ liệu và con trỏ đến node tiếp theo</li>
+                        <li>Không cần cấp phát bộ nhớ liên tục như mảng</li>
+                        <li>Chèn/xóa: O(1) nếu biết vị trí, O(n) nếu phải tìm</li>
+                        <li>Truy cập: O(n) (phải duyệt từ đầu)</li>
+                        <li>Phù hợp khi cần chèn/xóa thường xuyên</li>
+                    </ul>
+
+                    <div class="formula-box">
+                        <strong>📐 Cấu trúc Node:</strong>
+                        <pre>struct Node {
+    int data;        // Dữ liệu
+    Node* next;      // Con trỏ đến node tiếp theo
+};</pre>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Ví dụ Linked List cơ bản trong C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">struct</span> Node {
+    <span class="keyword">int</span> data;
+    Node* next;
+    
+    <span class="function">Node</span>(<span class="keyword">int</span> val) {
+        data = val;
+        next = <span class="keyword">nullptr</span>;
+    }
+};
+
+<span class="keyword">class</span> LinkedList {
+<span class="keyword">private</span>:
+    Node* head;
+    
+<span class="keyword">public</span>:
+    <span class="function">LinkedList</span>() {
+        head = <span class="keyword">nullptr</span>;
+    }
+    
+    <span class="comment">// Chèn vào đầu danh sách</span>
+    <span class="keyword">void</span> <span class="function">insertAtHead</span>(<span class="keyword">int</span> val) {
+        Node* newNode = <span class="keyword">new</span> Node(val);
+        newNode->next = head;
+        head = newNode;
+    }
+    
+    <span class="comment">// Chèn vào cuối danh sách</span>
+    <span class="keyword">void</span> <span class="function">insertAtTail</span>(<span class="keyword">int</span> val) {
+        Node* newNode = <span class="keyword">new</span> Node(val);
+        
+        <span class="keyword">if</span> (head == <span class="keyword">nullptr</span>) {
+            head = newNode;
+            <span class="keyword">return</span>;
+        }
+        
+        Node* current = head;
+        <span class="keyword">while</span> (current->next != <span class="keyword">nullptr</span>) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+    
+    <span class="comment">// In danh sách</span>
+    <span class="keyword">void</span> <span class="function">print</span>() {
+        Node* current = head;
+        <span class="keyword">while</span> (current != <span class="keyword">nullptr</span>) {
+            cout << current->data << <span class="string">" -> "</span>;
+            current = current->next;
+        }
+        cout << <span class="string">"NULL"</span> << endl;
+    }
+    
+    <span class="comment">// Xóa node có giá trị val</span>
+    <span class="keyword">void</span> <span class="function">deleteNode</span>(<span class="keyword">int</span> val) {
+        <span class="keyword">if</span> (head == <span class="keyword">nullptr</span>) <span class="keyword">return</span>;
+        
+        <span class="comment">// Nếu node đầu cần xóa</span>
+        <span class="keyword">if</span> (head->data == val) {
+            Node* temp = head;
+            head = head->next;
+            <span class="keyword">delete</span> temp;
+            <span class="keyword">return</span>;
+        }
+        
+        <span class="comment">// Tìm node cần xóa</span>
+        Node* current = head;
+        <span class="keyword">while</span> (current->next != <span class="keyword">nullptr</span> && current->next->data != val) {
+            current = current->next;
+        }
+        
+        <span class="keyword">if</span> (current->next != <span class="keyword">nullptr</span>) {
+            Node* temp = current->next;
+            current->next = current->next->next;
+            <span class="keyword">delete</span> temp;
+        }
+    }
+    
+    <span class="comment">// Giải phóng bộ nhớ</span>
+    <span class="keyword">void</span> <span class="function">clear</span>() {
+        <span class="keyword">while</span> (head != <span class="keyword">nullptr</span>) {
+            Node* temp = head;
+            head = head->next;
+            <span class="keyword">delete</span> temp;
+        }
+    }
+    
+    <span class="function">~LinkedList</span>() {
+        <span class="function">clear</span>();
+    }
+};
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    LinkedList list;
+    
+    <span class="comment">// Chèn các phần tử</span>
+    list.insertAtTail(<span class="number">1</span>);
+    list.insertAtTail(<span class="number">2</span>);
+    list.insertAtTail(<span class="number">3</span>);
+    list.insertAtHead(<span class="number">0</span>);
+    
+    list.print();  <span class="comment">// Output: 0 -> 1 -> 2 -> 3 -> NULL</span>
+    
+    <span class="comment">// Xóa phần tử</span>
+    list.deleteNode(<span class="number">2</span>);
+    list.print();  <span class="comment">// Output: 0 -> 1 -> 3 -> NULL</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
             </section>
 
             <section id="algorithms">
@@ -2416,6 +2590,340 @@ start = 0, end = 3</pre>
     } <span class="keyword">else</span> {
         cout << <span class="string">"Không tìm thấy đường đi"</span> << endl;
     }
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB: BÀI TẬP -->
+        <div id="practice" class="tab-content">
+            <section id="practice-problems">
+                <h2>📝 Bài Tập Thực Hành</h2>
+
+                <!-- BÀI 1: Con trỏ -->
+                <div class="problem">
+                    <h3>🔗 Bài 1: Hoán Đổi Giá Trị Bằng Con Trỏ</h3>
+                    
+                    <p><strong>Đề bài:</strong> Viết hàm hoán đổi giá trị của hai biến số nguyên bằng cách sử dụng con trỏ.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Hàm nhận vào 2 con trỏ int*</li>
+                            <li>Dùng biến tạm để lưu giá trị</li>
+                            <li>Hoán đổi giá trị thông qua con trỏ</li>
+                        </ul>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>a = 5, b = 10</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>a = 10, b = 5</pre>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Hoán đổi bằng con trỏ</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="comment">// Hàm hoán đổi giá trị bằng con trỏ</span>
+<span class="keyword">void</span> <span class="function">swap</span>(<span class="keyword">int</span>* a, <span class="keyword">int</span>* b) {
+    <span class="keyword">int</span> temp = *a;  <span class="comment">// Lưu giá trị tại địa chỉ a</span>
+    *a = *b;         <span class="comment">// Gán giá trị tại địa chỉ b cho a</span>
+    *b = temp;       <span class="comment">// Gán giá trị tạm cho b</span>
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> x = <span class="number">5</span>, y = <span class="number">10</span>;
+    
+    cout << <span class="string">"Trước khi hoán đổi: x = "</span> << x << <span class="string">", y = "</span> << y << endl;
+    
+    <span class="function">swap</span>(&x, &y);  <span class="comment">// Truyền địa chỉ</span>
+    
+    cout << <span class="string">"Sau khi hoán đổi: x = "</span> << x << <span class="string">", y = "</span> << y << endl;
+    <span class="comment">// Output: x = 10, y = 5</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 2: Con trỏ -->
+                <div class="problem">
+                    <h3>📊 Bài 2: Tính Tổng Mảng Bằng Con Trỏ</h3>
+                    
+                    <p><strong>Đề bài:</strong> Viết hàm tính tổng các phần tử trong mảng bằng cách sử dụng con trỏ để duyệt mảng.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Nhận vào con trỏ đến phần tử đầu mảng và kích thước</li>
+                            <li>Dùng con trỏ để duyệt từ đầu đến cuối mảng</li>
+                            <li>Tăng con trỏ để di chuyển đến phần tử tiếp theo</li>
+                        </ul>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>arr = [1, 2, 3, 4, 5]
+n = 5</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>15</pre>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Tính tổng bằng con trỏ</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="comment">// Hàm tính tổng mảng bằng con trỏ</span>
+<span class="keyword">int</span> <span class="function">sumArray</span>(<span class="keyword">int</span>* arr, <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> sum = <span class="number">0</span>;
+    <span class="keyword">int</span>* ptr = arr;  <span class="comment">// Con trỏ trỏ đến phần tử đầu</span>
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+        sum += *ptr;   <span class="comment">// Lấy giá trị tại địa chỉ ptr</span>
+        ptr++;         <span class="comment">// Di chuyển con trỏ đến phần tử tiếp theo</span>
+    }
+    
+    <span class="keyword">return</span> sum;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> arr[] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+    <span class="keyword">int</span> n = <span class="keyword">sizeof</span>(arr) / <span class="keyword">sizeof</span>(arr[<span class="number">0</span>]);
+    
+    <span class="keyword">int</span> result = <span class="function">sumArray</span>(arr, n);
+    cout << <span class="string">"Tổng các phần tử: "</span> << result << endl;  <span class="comment">// Output: 15</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 3: Linked List -->
+                <div class="problem">
+                    <h3>🔗 Bài 3: Xóa Node Trong Linked List</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một danh sách liên kết và một giá trị val. Xóa tất cả các node có giá trị bằng val trong danh sách.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Xử lý trường hợp node đầu cần xóa</li>
+                            <li>Duyệt danh sách, tìm node có giá trị val</span>
+                            <li>Khi tìm thấy, cập nhật liên kết và giải phóng bộ nhớ</li>
+                            <li>Lưu ý: cần con trỏ prev để cập nhật liên kết</li>
+                        </ul>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>1 -> 2 -> 6 -> 3 -> 4 -> 5 -> 6 -> NULL
+val = 6</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>1 -> 2 -> 3 -> 4 -> 5 -> NULL</pre>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Xóa node trong Linked List</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">struct</span> Node {
+    <span class="keyword">int</span> data;
+    Node* next;
+    
+    <span class="function">Node</span>(<span class="keyword">int</span> val) : data(val), next(<span class="keyword">nullptr</span>) {}
+};
+
+<span class="keyword">void</span> <span class="function">printList</span>(Node* head) {
+    Node* current = head;
+    <span class="keyword">while</span> (current != <span class="keyword">nullptr</span>) {
+        cout << current->data;
+        <span class="keyword">if</span> (current->next != <span class="keyword">nullptr</span>) {
+            cout << <span class="string">" -> "</span>;
+        }
+        current = current->next;
+    }
+    cout << <span class="string">" -> NULL"</span> << endl;
+}
+
+<span class="comment">// Xóa tất cả node có giá trị val</span>
+Node* <span class="function">removeElements</span>(Node* head, <span class="keyword">int</span> val) {
+    <span class="comment">// Xóa các node đầu có giá trị val</span>
+    <span class="keyword">while</span> (head != <span class="keyword">nullptr</span> && head->data == val) {
+        Node* temp = head;
+        head = head->next;
+        <span class="keyword">delete</span> temp;
+    }
+    
+    <span class="keyword">if</span> (head == <span class="keyword">nullptr</span>) <span class="keyword">return</span> <span class="keyword">nullptr</span>;
+    
+    <span class="comment">// Duyệt và xóa các node còn lại</span>
+    Node* current = head;
+    <span class="keyword">while</span> (current->next != <span class="keyword">nullptr</span>) {
+        <span class="keyword">if</span> (current->next->data == val) {
+            Node* temp = current->next;
+            current->next = current->next->next;
+            <span class="keyword">delete</span> temp;
+        } <span class="keyword">else</span> {
+            current = current->next;
+        }
+    }
+    
+    <span class="keyword">return</span> head;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="comment">// Tạo danh sách: 1 -> 2 -> 6 -> 3 -> 4 -> 5 -> 6</span>
+    Node* head = <span class="keyword">new</span> Node(<span class="number">1</span>);
+    head->next = <span class="keyword">new</span> Node(<span class="number">2</span>);
+    head->next->next = <span class="keyword">new</span> Node(<span class="number">6</span>);
+    head->next->next->next = <span class="keyword">new</span> Node(<span class="number">3</span>);
+    head->next->next->next->next = <span class="keyword">new</span> Node(<span class="number">4</span>);
+    head->next->next->next->next->next = <span class="keyword">new</span> Node(<span class="number">5</span>);
+    head->next->next->next->next->next->next = <span class="keyword">new</span> Node(<span class="number">6</span>);
+    
+    cout << <span class="string">"Danh sách ban đầu: "</span>;
+    <span class="function">printList</span>(head);
+    
+    head = <span class="function">removeElements</span>(head, <span class="number">6</span>);
+    
+    cout << <span class="string">"Danh sách sau khi xóa 6: "</span>;
+    <span class="function">printList</span>(head);  <span class="comment">// 1 -> 2 -> 3 -> 4 -> 5 -> NULL</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 4: Tham lam -->
+                <div class="problem">
+                    <h3>🎯 Bài 4: Chọn Nhiều Hoạt Động Nhất (Tham Lam)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho n hoạt động, mỗi hoạt động có thời gian bắt đầu và kết thúc. Tìm số lượng hoạt động tối đa có thể tham gia mà không bị chồng chéo.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Sắp xếp các hoạt động theo thời gian kết thúc tăng dần</li>
+                            <li>Luôn chọn hoạt động kết thúc sớm nhất trong số các hoạt động còn lại</li>
+                            <li>Bỏ qua các hoạt động chồng chéo với hoạt động đã chọn</li>
+                        </ul>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>activities = [(1, 2), (3, 4), (0, 6), (5, 7), (8, 9), (5, 9)]
+(start, finish)</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>4</pre>
+                        <p><strong>Giải thích:</strong> Chọn các hoạt động: (1,2), (3,4), (5,7), (8,9)</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Activity Selection (Tham lam)</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">maxActivities</span>(vector&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;& activities) {
+    <span class="keyword">int</span> n = activities.size();
+    <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+    
+    <span class="comment">// Sắp xếp theo thời gian kết thúc tăng dần</span>
+    sort(activities.begin(), activities.end(), [](pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; a, pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; b) {
+        <span class="keyword">return</span> a.second < b.second;
+    });
+    
+    <span class="keyword">int</span> count = <span class="number">1</span>;  <span class="comment">// Chọn hoạt động đầu tiên</span>
+    <span class="keyword">int</span> lastFinish = activities[<span class="number">0</span>].second;
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i < n; i++) {
+        <span class="comment">// Nếu hoạt động này không chồng chéo</span>
+        <span class="keyword">if</span> (activities[i].first >= lastFinish) {
+            count++;
+            lastFinish = activities[i].second;
+        }
+    }
+    
+    <span class="keyword">return</span> count;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; activities = {
+        {<span class="number">1</span>, <span class="number">2</span>}, {<span class="number">3</span>, <span class="number">4</span>}, {<span class="number">0</span>, <span class="number">6</span>},
+        {<span class="number">5</span>, <span class="number">7</span>}, {<span class="number">8</span>, <span class="number">9</span>}, {<span class="number">5</span>, <span class="number">9</span>}
+    };
+    
+    cout << <span class="string">"Số hoạt động tối đa: "</span> << <span class="function">maxActivities</span>(activities) << endl;  <span class="comment">// Output: 4</span>
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 5: Quy hoạch động -->
+                <div class="problem">
+                    <h3>💡 Bài 5: Tổng Con Lớn Nhất (Quy Hoạch Động)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một mảng số nguyên, tìm tổng lớn nhất của dãy con liên tiếp (subarray).</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Dùng quy hoạch động: dp[i] = tổng lớn nhất của dãy con kết thúc tại vị trí i</li>
+                            <li>dp[i] = max(arr[i], dp[i-1] + arr[i])</li>
+                            <li>Nếu dp[i-1] < 0, bắt đầu dãy con mới từ arr[i]</li>
+                            <li>Nếu dp[i-1] >= 0, tiếp tục dãy con hiện tại</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Công thức:</strong>
+                        <p><code>dp[i] = max(arr[i], dp[i-1] + arr[i])</code></p>
+                        <p><code>result = max(dp[0], dp[1], ..., dp[n-1])</code></p>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>arr = [-2, 1, -3, 4, -1, 2, 1, -5, 4]</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>6</pre>
+                        <p><strong>Giải thích:</strong> Dãy con [4, -1, 2, 1] có tổng = 6 là lớn nhất</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Maximum Subarray (Quy hoạch động)</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;algorithm&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">maxSubArray</span>(vector&lt;<span class="keyword">int</span>&gt;& nums) {
+    <span class="keyword">int</span> n = nums.size();
+    <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+    
+    <span class="comment">// dp[i]: tổng lớn nhất của dãy con kết thúc tại vị trí i</span>
+    <span class="keyword">int</span> maxEndingHere = nums[<span class="number">0</span>];
+    <span class="keyword">int</span> maxSoFar = nums[<span class="number">0</span>];
+    
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i < n; i++) {
+        <span class="comment">// Chọn: bắt đầu dãy con mới hoặc tiếp tục dãy con cũ</span>
+        maxEndingHere = max(nums[i], maxEndingHere + nums[i]);
+        
+        <span class="comment">// Cập nhật tổng lớn nhất</span>
+        maxSoFar = max(maxSoFar, maxEndingHere);
+    }
+    
+    <span class="keyword">return</span> maxSoFar;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    vector&lt;<span class="keyword">int</span>&gt; arr = {-<span class="number">2</span>, <span class="number">1</span>, -<span class="number">3</span>, <span class="number">4</span>, -<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, -<span class="number">5</span>, <span class="number">4</span>};
+    
+    cout << <span class="string">"Tổng dãy con lớn nhất: "</span> << <span class="function">maxSubArray</span>(arr) << endl;  <span class="comment">// Output: 6</span>
     
     <span class="keyword">return</span> <span class="number">0</span>;
 }</div>
