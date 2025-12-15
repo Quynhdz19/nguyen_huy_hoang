@@ -253,6 +253,7 @@
         <div class="tabs">
             <button class="tab-button" onclick="openTab(event, 'greedy')">🎯 Thuật Toán Tham Lam</button>
             <button class="tab-button active" onclick="openTab(event, 'dp')">💡 Thuật Toán Quy Hoạch Động</button>
+            <button class="tab-button" onclick="openTab(event, 'backtracking')">🔄 Thuật Toán Quay Lui</button>
             <button class="tab-button" onclick="openTab(event, 'ds')">📚 Cấu Trúc Dữ Liệu & Giải Thuật</button>
             <button class="tab-button" onclick="openTab(event, 'practice')">📝 Bài Tập</button>
         </div>
@@ -1663,6 +1664,559 @@ d = [1, 3, 5] (các ngày tham quan)</pre>
     vector&lt;<span class="keyword">int</span>&gt; d = {<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>};  <span class="comment">// Ngày tham quan</span>
     
     cout << <span class="function">minCost</span>(a, b, c, d) << endl;
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB: THUẬT TOÁN QUAY LUI -->
+        <div id="backtracking" class="tab-content">
+            <section id="backtracking-theory">
+                <h2>1. Tổng Hợp Kiến Thức Thuật Toán Quay Lui</h2>
+
+                <div class="card">
+                    <h3>🔍 Thuật Toán Quay Lui Là Gì?</h3>
+                    <p><strong>Thuật toán quay lui (Backtracking Algorithm)</strong> là một kỹ thuật giải quyết bài toán bằng cách thử nghiệm từng bước, nếu bước hiện tại không dẫn đến giải pháp thì quay lại (backtrack) và thử phương án khác.</p>
+                    
+                    <p><strong>Đặc điểm chính:</strong></p>
+                    <ul>
+                        <li><span class="highlight">Thử và sai</span>: Thử từng khả năng một cách có hệ thống</li>
+                        <li><span class="highlight">Quay lui</span>: Khi gặp ngõ cụt, quay lại bước trước và thử phương án khác</li>
+                        <li><span class="highlight">Đệ quy</span>: Thường được triển khai bằng đệ quy</li>
+                        <li><span class="highlight">Cắt tỉa</span>: Sử dụng điều kiện để loại bỏ các nhánh không cần thiết (pruning)</li>
+                        <li><span class="highlight">Tìm tất cả giải pháp</span>: Có thể tìm tất cả các giải pháp thỏa mãn</li>
+                    </ul>
+
+                    <p><strong>Các bước giải quyết bài toán Backtracking:</strong></p>
+                    <ol>
+                        <li>Xác định <strong>không gian tìm kiếm</strong> (search space)</li>
+                        <li>Xác định <strong>điều kiện ràng buộc</strong> (constraints)</li>
+                        <li>Xây dựng hàm <strong>kiểm tra tính hợp lệ</strong> (isValid)</li>
+                        <li>Triển khai hàm <strong>đệ quy quay lui</strong> (backtrack)</li>
+                        <li>Xử lý <strong>cắt tỉa</strong> để tối ưu hiệu suất</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>⚖️ So Sánh Thuật Toán Quay Lui với Các Kỹ Thuật Khác</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Tiêu chí</th>
+                                <th>Thuật Toán Quay Lui</th>
+                                <th>Quy Hoạch Động</th>
+                                <th>Thuật Toán Tham Lam</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Cách tiếp cận</strong></td>
+                                <td>Thử tất cả khả năng, quay lui khi sai</td>
+                                <td>Lưu trữ kết quả con để tái sử dụng</td>
+                                <td>Chọn lựa chọn tốt nhất tại mỗi bước</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Không gian tìm kiếm</strong></td>
+                                <td>Không gian đầy đủ (có thể rất lớn)</td>
+                                <td>Không gian con tối ưu</td>
+                                <td>Không gian lựa chọn tại mỗi bước</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Độ phức tạp thời gian</strong></td>
+                                <td>Thường O(b^d) - b là nhánh, d là độ sâu</td>
+                                <td>Thường O(n) hoặc O(n²)</td>
+                                <td>Thường O(n log n) hoặc O(n)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Quay lui</strong></td>
+                                <td>Có - quay lại bước trước khi sai</td>
+                                <td>Không - không cần quay lui</td>
+                                <td>Không - không quay lại</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ứng dụng</strong></td>
+                                <td>N-Queens, Sudoku, Permutations, Maze solving</td>
+                                <td>Fibonacci, LCS, Knapsack, Edit Distance</td>
+                                <td>Activity Selection, MST, Shortest Path</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tìm tất cả giải pháp</strong></td>
+                                <td>Có thể tìm tất cả</td>
+                                <td>Chỉ tìm một giải pháp tối ưu</td>
+                                <td>Chỉ tìm một giải pháp</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Cấu Trúc Cơ Bản Của Thuật Toán Quay Lui</h3>
+                    <div class="code-block"><span class="comment">// Cấu trúc chung của thuật toán quay lui</span>
+<span class="keyword">void</span> <span class="function">backtrack</span>(<span class="comment">/* tham số */</span>) {
+    <span class="comment">// 1. Kiểm tra điều kiện dừng (base case)</span>
+    <span class="keyword">if</span> (<span class="comment">/* đã tìm thấy giải pháp */</span>) {
+        <span class="comment">// Xử lý giải pháp (in ra, lưu lại, ...)</span>
+        <span class="keyword">return</span>;
+    }
+    
+    <span class="comment">// 2. Thử tất cả các khả năng tại bước hiện tại</span>
+    <span class="keyword">for</span> (<span class="comment">/* mỗi lựa chọn có thể */</span>) {
+        <span class="comment">// 3. Kiểm tra tính hợp lệ (constraint checking)</span>
+        <span class="keyword">if</span> (<span class="function">isValid</span>(<span class="comment">/* lựa chọn */</span>)) {
+            <span class="comment">// 4. Thực hiện lựa chọn (make choice)</span>
+            <span class="comment">// Cập nhật trạng thái</span>
+            
+            <span class="comment">// 5. Đệ quy để thử bước tiếp theo</span>
+            <span class="function">backtrack</span>(<span class="comment">/* tham số mới */</span>);
+            
+            <span class="comment">// 6. Quay lui (undo choice) - khôi phục trạng thái</span>
+            <span class="comment">// Hoàn tác các thay đổi</span>
+        }
+    }
+}</div>
+                </div>
+            </section>
+
+            <section id="backtracking-problems">
+                <h2>2. Bài Tập Thuật Toán Quay Lui</h2>
+
+                <!-- BÀI 1: N-Queens -->
+                <div class="problem">
+                    <h3>👑 Bài 1: Bài Toán N-Queens</h3>
+                    
+                    <p><strong>Đề bài:</strong> Đặt N quân hậu trên bàn cờ N×N sao cho không có hai quân hậu nào tấn công lẫn nhau. Quân hậu có thể tấn công theo hàng ngang, hàng dọc và đường chéo.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Đặt quân hậu từng hàng một (mỗi hàng chỉ có một quân hậu)</li>
+                            <li>Với mỗi hàng, thử đặt quân hậu vào từng cột</li>
+                            <li>Kiểm tra xem vị trí có an toàn không (không bị tấn công bởi các quân hậu đã đặt)</li>
+                            <li>Nếu an toàn, đặt quân hậu và đệ quy cho hàng tiếp theo</li>
+                            <li>Nếu không tìm được giải pháp, quay lui và thử cột khác</li>
+                            <li>Độ phức tạp: O(N!) trong trường hợp xấu nhất</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Thuật toán:</strong>
+                        <ol>
+                            <li>Mảng <code>board[N]</code> lưu vị trí quân hậu: <code>board[i] = j</code> nghĩa là quân hậu ở hàng i, cột j</li>
+                            <li>Hàm <code>isSafe(row, col)</code> kiểm tra xem có thể đặt quân hậu tại (row, col) không</li>
+                            <li>Kiểm tra: cùng cột, cùng đường chéo chính, cùng đường chéo phụ</li>
+                            <li>Hàm <code>solveNQueens(row)</code> đặt quân hậu cho hàng row</li>
+                            <li>Nếu row == N: đã đặt xong tất cả quân hậu → in kết quả</li>
+                            <li>Ngược lại: thử từng cột, nếu an toàn thì đặt và đệ quy</li>
+                        </ol>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>N = 4</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>Giải pháp 1:
+. Q . .
+. . . Q
+Q . . .
+. . Q .
+
+Giải pháp 2:
+. . Q .
+Q . . .
+. . . Q
+. Q . .</pre>
+                        <p><strong>Giải thích:</strong> Với N=4, có 2 cách đặt 4 quân hậu trên bàn cờ 4×4.</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - N-Queens Problem</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> N;
+vector&lt;<span class="keyword">int</span>&gt; board;  <span class="comment">// board[i] = cột của quân hậu ở hàng i</span>
+
+<span class="comment">// Kiểm tra xem có thể đặt quân hậu tại (row, col) không</span>
+<span class="keyword">bool</span> <span class="function">isSafe</span>(<span class="keyword">int</span> row, <span class="keyword">int</span> col) {
+    <span class="comment">// Kiểm tra tất cả các quân hậu đã đặt trước đó</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < row; i++) {
+        <span class="comment">// Cùng cột</span>
+        <span class="keyword">if</span> (board[i] == col) <span class="keyword">return</span> <span class="keyword">false</span>;
+        
+        <span class="comment">// Cùng đường chéo chính (row - col = constant)</span>
+        <span class="keyword">if</span> (i - board[i] == row - col) <span class="keyword">return</span> <span class="keyword">false</span>;
+        
+        <span class="comment">// Cùng đường chéo phụ (row + col = constant)</span>
+        <span class="keyword">if</span> (i + board[i] == row + col) <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+
+<span class="comment">// In bàn cờ</span>
+<span class="keyword">void</span> <span class="function">printBoard</span>() {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < N; i++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j < N; j++) {
+            <span class="keyword">if</span> (board[i] == j) cout << <span class="string">"Q "</span>;
+            <span class="keyword">else</span> cout << <span class="string">". "</span>;
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+<span class="comment">// Hàm quay lui chính</span>
+<span class="keyword">void</span> <span class="function">solveNQueens</span>(<span class="keyword">int</span> row) {
+    <span class="comment">// Base case: đã đặt xong tất cả quân hậu</span>
+    <span class="keyword">if</span> (row == N) {
+        <span class="function">printBoard</span>();
+        <span class="keyword">return</span>;
+    }
+    
+    <span class="comment">// Thử đặt quân hậu vào từng cột của hàng hiện tại</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col < N; col++) {
+        <span class="keyword">if</span> (<span class="function">isSafe</span>(row, col)) {
+            <span class="comment">// Đặt quân hậu</span>
+            board[row] = col;
+            
+            <span class="comment">// Đệ quy cho hàng tiếp theo</span>
+            <span class="function">solveNQueens</span>(row + <span class="number">1</span>);
+            
+            <span class="comment">// Quay lui: không cần làm gì vì sẽ ghi đè giá trị ở lần thử tiếp theo</span>
+        }
+    }
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cout << <span class="string">"Nhập N: "</span>;
+    cin >> N;
+    
+    board.resize(N);
+    <span class="function">solveNQueens</span>(<span class="number">0</span>);
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 2: Tìm Tất Cả Hoán Vị -->
+                <div class="problem">
+                    <h3>🔄 Bài 2: Tìm Tất Cả Hoán Vị (Permutations)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một mảng các số nguyên phân biệt, tìm tất cả các hoán vị có thể của mảng đó.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Sử dụng mảng đánh dấu để theo dõi phần tử nào đã được sử dụng</li>
+                            <li>Với mỗi vị trí trong hoán vị, thử tất cả các phần tử chưa được sử dụng</li>
+                            <li>Đệ quy để điền vị trí tiếp theo</li>
+                            <li>Sau khi đệ quy, đánh dấu lại phần tử là chưa sử dụng (quay lui)</li>
+                            <li>Độ phức tạp: O(N! × N) - có N! hoán vị, mỗi hoán vị cần O(N) để tạo</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Thuật toán:</strong>
+                        <ol>
+                            <li>Mảng <code>used[]</code> đánh dấu phần tử đã sử dụng</li>
+                            <li>Mảng <code>current[]</code> lưu hoán vị hiện tại</li>
+                            <li>Hàm <code>backtrack(pos)</code> điền phần tử vào vị trí pos</li>
+                            <li>Nếu pos == n: đã tạo xong một hoán vị → in ra</li>
+                            <li>Ngược lại: thử từng phần tử chưa dùng, đánh dấu, đệ quy, rồi bỏ đánh dấu</li>
+                        </ol>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>nums = [1, 2, 3]</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]</pre>
+                        <p><strong>Giải thích:</strong> Với 3 phần tử, có 3! = 6 hoán vị.</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Tìm tất cả hoán vị</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+vector&lt;<span class="keyword">int</span>&gt; nums;
+vector&lt;<span class="keyword">bool</span>&gt; used;
+vector&lt;<span class="keyword">int</span>&gt; current;
+
+<span class="comment">// Hàm quay lui tìm hoán vị</span>
+<span class="keyword">void</span> <span class="function">backtrack</span>(<span class="keyword">int</span> pos) {
+    <span class="comment">// Base case: đã tạo xong một hoán vị</span>
+    <span class="keyword">if</span> (pos == nums.size()) {
+        <span class="comment">// In hoán vị</span>
+        cout << <span class="string">"["</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < current.size(); i++) {
+            cout << current[i];
+            <span class="keyword">if</span> (i < current.size() - <span class="number">1</span>) cout << <span class="string">", "</span>;
+        }
+        cout << <span class="string">"]"</span> << endl;
+        <span class="keyword">return</span>;
+    }
+    
+    <span class="comment">// Thử từng phần tử chưa được sử dụng</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < nums.size(); i++) {
+        <span class="keyword">if</span> (!used[i]) {
+            <span class="comment">// Đánh dấu đã sử dụng</span>
+            used[i] = <span class="keyword">true</span>;
+            current.push_back(nums[i]);
+            
+            <span class="comment">// Đệ quy cho vị trí tiếp theo</span>
+            <span class="function">backtrack</span>(pos + <span class="number">1</span>);
+            
+            <span class="comment">// Quay lui: bỏ đánh dấu và xóa phần tử</span>
+            used[i] = <span class="keyword">false</span>;
+            current.pop_back();
+        }
+    }
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> n;
+    cout << <span class="string">"Nhập số phần tử: "</span>;
+    cin >> n;
+    
+    nums.resize(n);
+    used.resize(n, <span class="keyword">false</span>);
+    
+    cout << <span class="string">"Nhập các phần tử: "</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+        cin >> nums[i];
+    }
+    
+    <span class="function">backtrack</span>(<span class="number">0</span>);
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 3: Rat in a Maze -->
+                <div class="problem">
+                    <h3>🐭 Bài 3: Chuột Trong Mê Cung (Rat in a Maze)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho một mê cung N×N, tìm đường đi từ góc trên bên trái (0,0) đến góc dưới bên phải (N-1, N-1). Ô có giá trị 1 là đường đi được, 0 là tường. Chuột chỉ có thể di chuyển xuống dưới hoặc sang phải.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Bắt đầu từ (0, 0), thử di chuyển xuống hoặc sang phải</li>
+                            <li>Kiểm tra xem vị trí mới có hợp lệ không (trong phạm vi mê cung, là đường đi được, chưa được thăm)</li>
+                            <li>Đánh dấu vị trí hiện tại là đã thăm</li>
+                            <li>Nếu đến được (N-1, N-1): in đường đi</li>
+                            <li>Đệ quy thử các hướng tiếp theo</li>
+                            <li>Sau khi đệ quy, bỏ đánh dấu để thử đường khác (quay lui)</li>
+                            <li>Độ phức tạp: O(2^(N²)) trong trường hợp xấu nhất</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Thuật toán:</strong>
+                        <ol>
+                            <li>Mảng <code>maze[][]</code> lưu mê cung</li>
+                            <li>Mảng <code>path[][]</code> đánh dấu đường đi</li>
+                            <li>Hàm <code>isValid(x, y)</code> kiểm tra vị trí hợp lệ</li>
+                            <li>Hàm <code>solveMaze(x, y)</code> tìm đường từ (x, y) đến đích</li>
+                            <li>Thử di chuyển: xuống (x+1, y) và phải (x, y+1)</li>
+                            <li>Nếu đến đích: in đường đi và return</li>
+                        </ol>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>N = 4
+maze = [
+    [1, 0, 0, 0],
+    [1, 1, 0, 1],
+    [0, 1, 0, 0],
+    [1, 1, 1, 1]
+]</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>Đường đi:
+1 0 0 0
+1 1 0 0
+0 1 0 0
+0 1 1 1
+
+(1 = đường đi, 0 = không đi)</pre>
+                        <p><strong>Giải thích:</strong> Tìm đường đi từ (0,0) đến (3,3) qua các ô có giá trị 1.</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Rat in a Maze</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> N;
+vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; maze;
+vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; path;
+
+<span class="comment">// Kiểm tra vị trí (x, y) có hợp lệ không</span>
+<span class="keyword">bool</span> <span class="function">isValid</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) {
+    <span class="comment">// Trong phạm vi mê cung, là đường đi được, chưa được thăm</span>
+    <span class="keyword">return</span> x >= <span class="number">0</span> && x < N && y >= <span class="number">0</span> && y < N 
+           && maze[x][y] == <span class="number">1</span> && path[x][y] == <span class="number">0</span>;
+}
+
+<span class="comment">// In đường đi</span>
+<span class="keyword">void</span> <span class="function">printPath</span>() {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < N; i++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j < N; j++) {
+            cout << path[i][j] << <span class="string">" "</span>;
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+<span class="comment">// Hàm quay lui tìm đường đi</span>
+<span class="keyword">bool</span> <span class="function">solveMaze</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) {
+    <span class="comment">// Base case: đã đến đích</span>
+    <span class="keyword">if</span> (x == N - <span class="number">1</span> && y == N - <span class="number">1</span>) {
+        path[x][y] = <span class="number">1</span>;
+        <span class="function">printPath</span>();
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+    
+    <span class="comment">// Đánh dấu vị trí hiện tại là đã thăm</span>
+    path[x][y] = <span class="number">1</span>;
+    
+    <span class="comment">// Thử di chuyển xuống dưới</span>
+    <span class="keyword">if</span> (<span class="function">isValid</span>(x + <span class="number">1</span>, y)) {
+        <span class="keyword">if</span> (<span class="function">solveMaze</span>(x + <span class="number">1</span>, y)) {
+            <span class="keyword">return</span> <span class="keyword">true</span>;
+        }
+    }
+    
+    <span class="comment">// Thử di chuyển sang phải</span>
+    <span class="keyword">if</span> (<span class="function">isValid</span>(x, y + <span class="number">1</span>)) {
+        <span class="keyword">if</span> (<span class="function">solveMaze</span>(x, y + <span class="number">1</span>)) {
+            <span class="keyword">return</span> <span class="keyword">true</span>;
+        }
+    }
+    
+    <span class="comment">// Quay lui: bỏ đánh dấu nếu không tìm được đường</span>
+    path[x][y] = <span class="number">0</span>;
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cout << <span class="string">"Nhập N: "</span>;
+    cin >> N;
+    
+    maze.resize(N, vector&lt;<span class="keyword">int</span>&gt;(N));
+    path.resize(N, vector&lt;<span class="keyword">int</span>&gt;(N, <span class="number">0</span>));
+    
+    cout << <span class="string">"Nhập mê cung (1 = đường đi, 0 = tường):"</span> << endl;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < N; i++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j < N; j++) {
+            cin >> maze[i][j];
+        }
+    }
+    
+    <span class="keyword">if</span> (!<span class="function">solveMaze</span>(<span class="number">0</span>, <span class="number">0</span>)) {
+        cout << <span class="string">"Không tìm thấy đường đi!"</span> << endl;
+    }
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+                </div>
+
+                <!-- BÀI 4: Tổ Hợp (Combinations) -->
+                <div class="problem">
+                    <h3>🔢 Bài 4: Tìm Tất Cả Tổ Hợp (Combinations)</h3>
+                    
+                    <p><strong>Đề bài:</strong> Cho hai số nguyên n và k, tìm tất cả các tổ hợp chập k của n phần tử {1, 2, ..., n}.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Mỗi tổ hợp là một tập con có k phần tử</li>
+                            <li>Để tránh trùng lặp, chỉ xét các phần tử lớn hơn phần tử cuối cùng đã chọn</li>
+                            <li>Bắt đầu từ phần tử start, thử thêm từng phần tử vào tổ hợp</li>
+                            <li>Khi tổ hợp đủ k phần tử: in ra</li>
+                            <li>Đệ quy với phần tử tiếp theo</li>
+                            <li>Quay lui bằng cách xóa phần tử vừa thêm</li>
+                            <li>Độ phức tạp: O(C(n,k) × k) - có C(n,k) tổ hợp</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Thuật toán:</strong>
+                        <ol>
+                            <li>Mảng <code>current</code> lưu tổ hợp hiện tại</li>
+                            <li>Hàm <code>backtrack(start)</code> tìm tổ hợp từ vị trí start</li>
+                            <li>Nếu current.size() == k: đã đủ k phần tử → in ra</li>
+                            <li>Ngược lại: thử thêm các phần tử từ start đến n</li>
+                            <li>Với mỗi phần tử i: thêm vào, đệ quy với start = i+1, rồi xóa ra</li>
+                        </ol>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>n = 4, k = 2</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>[1, 2]
+[1, 3]
+[1, 4]
+[2, 3]
+[2, 4]
+[3, 4]</pre>
+                        <p><strong>Giải thích:</strong> Tất cả các tổ hợp chập 2 của {1,2,3,4}.</p>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Tìm tất cả tổ hợp</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> n, k;
+vector&lt;<span class="keyword">int</span>&gt; current;
+
+<span class="comment">// Hàm quay lui tìm tổ hợp</span>
+<span class="keyword">void</span> <span class="function">backtrack</span>(<span class="keyword">int</span> start) {
+    <span class="comment">// Base case: đã đủ k phần tử</span>
+    <span class="keyword">if</span> (current.size() == k) {
+        <span class="comment">// In tổ hợp</span>
+        cout << <span class="string">"["</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < current.size(); i++) {
+            cout << current[i];
+            <span class="keyword">if</span> (i < current.size() - <span class="number">1</span>) cout << <span class="string">", "</span>;
+        }
+        cout << <span class="string">"]"</span> << endl;
+        <span class="keyword">return</span>;
+    }
+    
+    <span class="comment">// Thử thêm các phần tử từ start đến n</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i <= n; i++) {
+        <span class="comment">// Thêm phần tử vào tổ hợp</span>
+        current.push_back(i);
+        
+        <span class="comment">// Đệ quy với phần tử tiếp theo (i+1 để tránh trùng lặp)</span>
+        <span class="function">backtrack</span>(i + <span class="number">1</span>);
+        
+        <span class="comment">// Quay lui: xóa phần tử vừa thêm</span>
+        current.pop_back();
+    }
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cout << <span class="string">"Nhập n và k: "</span>;
+    cin >> n >> k;
+    
+    <span class="function">backtrack</span>(<span class="number">1</span>);  <span class="comment">// Bắt đầu từ phần tử 1</span>
+    
     <span class="keyword">return</span> <span class="number">0</span>;
 }</div>
                 </div>
