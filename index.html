@@ -3820,6 +3820,160 @@ vector&lt;<span class="keyword">char</span>&gt; sequence;
                         </ul>
                     </div>
                 </div>
+
+                <!-- BÀI: LIETKE2 - LIỆT KÊ 2 -->
+                <div class="problem">
+                    <h3>🔢 LIETKE2 – LIỆT KÊ 2</h3>
+                    
+                    <p><strong>Đề bài:</strong> Liệt kê tất cả các cách đặt đúng n cặp ngoặc đơn mở và n cặp ngoặc đơn đóng. Cho số nguyên dương n (n ≤ 10). In các dãy ngoặc hợp lệ theo thứ tự từ điển, mỗi dãy trên một dòng. (Trong thứ tự từ điển, ngoặc mở '(' nhỏ hơn ngoặc đóng ')').</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Đây là bài toán kinh điển về sinh dãy ngoặc đơn hợp lệ</li>
+                            <li>Sử dụng thuật toán quay lui (backtracking)</li>
+                            <li>Với mỗi vị trí, có thể đặt '(' hoặc ')'</li>
+                            <li>Điều kiện hợp lệ:</li>
+                            <li>  - Số ngoặc mở '(' phải ≤ n</li>
+                            <li>  - Số ngoặc đóng ')' phải ≤ số ngoặc mở đã đặt</li>
+                            <li>  - Tổng số ngoặc mở = n và tổng số ngoặc đóng = n</li>
+                            <li>Để đảm bảo thứ tự từ điển: luôn thử '(' trước ')'</li>
+                            <li>Độ phức tạp: O(C(2n,n)/(n+1)) - số Catalan thứ n</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Thuật toán:</strong>
+                        <ol>
+                            <li>Hàm <code>backtrack(pos, open, close)</code>:</li>
+                            <li>  - pos: vị trí hiện tại trong dãy</li>
+                            <li>  - open: số ngoặc mở đã đặt</li>
+                            <li>  - close: số ngoặc đóng đã đặt</li>
+                            <li>Base case: Nếu pos == 2*n: Đã đặt đủ 2*n ký tự → in dãy</li>
+                            <li>Thử đặt '(' nếu: open < n</li>
+                            <li>Thử đặt ')' nếu: close < open (đảm bảo hợp lệ)</li>
+                            <li>Luôn thử '(' trước ')' để đảm bảo thứ tự từ điển</li>
+                            <li>Số lượng dãy hợp lệ = số Catalan C(n) = (2n)!/((n+1)!×n!)</li>
+                        </ol>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>3</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>((()))
+(()())
+(())()
+()(())
+()()()</pre>
+                        <p><strong>Giải thích:</strong></p>
+                        <ul>
+                            <li>Với n=3, có 5 cách đặt 3 cặp ngoặc hợp lệ</li>
+                            <li>Đây là số Catalan thứ 3: C(3) = 5</li>
+                            <li>Tất cả các dãy đều có 3 ngoặc mở và 3 ngoặc đóng</li>
+                            <li>Mỗi dãy đều hợp lệ (có thể đóng tất cả ngoặc)</li>
+                        </ul>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - LIETKE2 - Liệt kê dãy ngoặc đơn hợp lệ</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> n;
+vector&lt;<span class="keyword">char</span>&gt; result;
+
+<span class="comment">// Hàm quay lui sinh dãy ngoặc đơn hợp lệ</span>
+<span class="keyword">void</span> <span class="function">backtrack</span>(<span class="keyword">int</span> pos, <span class="keyword">int</span> open, <span class="keyword">int</span> close) {
+    <span class="comment">// Base case: đã đặt đủ 2*n ký tự</span>
+    <span class="keyword">if</span> (pos == <span class="number">2</span> * n) {
+        <span class="comment">// In dãy ngoặc hợp lệ</span>
+        <span class="keyword">for</span> (<span class="keyword">char</span> c : result) {
+            cout << c;
+        }
+        cout << endl;
+        <span class="keyword">return</span>;
+    }
+    
+    <span class="comment">// Thử đặt ngoặc mở '(' nếu còn có thể</span>
+    <span class="keyword">if</span> (open < n) {
+        result[pos] = <span class="string">'('</span>;
+        <span class="function">backtrack</span>(pos + <span class="number">1</span>, open + <span class="number">1</span>, close);
+    }
+    
+    <span class="comment">// Thử đặt ngoặc đóng ')' nếu hợp lệ (số ngoặc đóng < số ngoặc mở)</span>
+    <span class="keyword">if</span> (close < open) {
+        result[pos] = <span class="string">')'</span>;
+        <span class="function">backtrack</span>(pos + <span class="number">1</span>, open, close + <span class="number">1</span>);
+    }
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cin >> n;
+    
+    result.resize(<span class="number">2</span> * n);
+    
+    <span class="comment">// Bắt đầu với vị trí 0, chưa có ngoặc mở và đóng nào</span>
+    <span class="function">backtrack</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+
+                    <div class="card" style="margin-top: 20px; background: #f0f8ff; padding: 20px; border-radius: 10px;">
+                        <h3>📝 Giải Thích Chi Tiết:</h3>
+                        <p><strong>1. Điều kiện hợp lệ của dãy ngoặc:</strong></p>
+                        <ul>
+                            <li>Số ngoặc mở '(' = số ngoặc đóng ')' = n</li>
+                            <li>Tại bất kỳ vị trí nào, số ngoặc mở đã đặt ≥ số ngoặc đóng đã đặt</li>
+                            <li>Ví dụ hợp lệ: <code>()()()</code>, <code>(()())</code></li>
+                            <li>Ví dụ không hợp lệ: <code>)(</code>, <code>())</code> (số đóng > số mở tại một thời điểm)</li>
+                        </ul>
+                        
+                        <p><strong>2. Cách hoạt động của thuật toán:</strong></p>
+                        <ul>
+                            <li>Với mỗi vị trí từ 0 đến 2n-1, thử đặt '(' hoặc ')'</li>
+                            <li>Luôn thử '(' trước để đảm bảo thứ tự từ điển (vì '(' < ')')</li>
+                            <li>Chỉ đặt '(' nếu số ngoặc mở đã đặt < n</li>
+                            <li>Chỉ đặt ')' nếu số ngoặc đóng < số ngoặc mở (đảm bảo hợp lệ)</li>
+                            <li>Khi đã đặt đủ 2n ký tự, in dãy</li>
+                        </ul>
+                        
+                        <p><strong>3. Ví dụ với n=3:</strong></p>
+                        <ul>
+                            <li>Bước 1: Đặt '(' (open=1, close=0)</li>
+                            <li>Bước 2: Có thể đặt '(' hoặc ')'. Thử '(' trước → <code>(</code></li>
+                            <li>Bước 3: Có thể đặt '(' hoặc ')'. Thử '(' trước → <code>((</code></li>
+                            <li>Bước 4: Chỉ có thể đặt ')' (vì open=3, không thể thêm '(') → <code>((</code></li>
+                            <li>Tiếp tục... → <code>((()))</code></li>
+                            <li>Quay lui và thử các khả năng khác</li>
+                        </ul>
+                        
+                        <p><strong>4. Số Catalan:</strong></p>
+                        <ul>
+                            <li>Số lượng dãy ngoặc hợp lệ với n cặp = số Catalan thứ n</li>
+                            <li>C(n) = (2n)! / ((n+1)! × n!)</li>
+                            <li>C(1) = 1: <code>()</code></li>
+                            <li>C(2) = 2: <code>()()</code>, <code>(())</code></li>
+                            <li>C(3) = 5: <code>()()()</code>, <code>()(())</code>, <code>(())()</code>, <code>(()())</code>, <code>((()))</code></li>
+                            <li>C(4) = 14, C(5) = 42, ...</li>
+                        </ul>
+                        
+                        <p><strong>5. Độ phức tạp:</strong></p>
+                        <ul>
+                            <li>Thời gian: O(C(n) × n) - có C(n) dãy hợp lệ, mỗi dãy độ dài 2n</li>
+                            <li>Không gian: O(n) - độ sâu đệ quy và mảng lưu kết quả</li>
+                            <li>Với n=10: C(10) = 16796 dãy hợp lệ</li>
+                        </ul>
+                        
+                        <p><strong>6. Tại sao luôn thử '(' trước?</strong></p>
+                        <ul>
+                            <li>Để đảm bảo thứ tự từ điển: '(' < ')'</li>
+                            <li>Ví dụ: <code>(()())</code> sẽ được sinh trước <code>(())()</code></li>
+                            <li>Vì ở vị trí 2, thử '(' trước nên được <code>(()</code> trước <code>(()</code></li>
+                        </ul>
+                    </div>
+                </div>
             </section>
         </div>
 
