@@ -256,6 +256,7 @@
             <button class="tab-button" onclick="openTab(event, 'backtracking')">🔄 Thuật Toán Quay Lui</button>
             <button class="tab-button" onclick="openTab(event, 'ds')">📚 Cấu Trúc Dữ Liệu & Giải Thuật</button>
             <button class="tab-button" onclick="openTab(event, 'practice')">📝 Bài Tập</button>
+            <button class="tab-button" onclick="openTab(event, 'exam')">📋 Giải Bài Đề Thi</button>
         </div>
 
         <!-- TAB: THUẬT TOÁN THAM LAM -->
@@ -3481,6 +3482,343 @@ Node* <span class="function">removeElements</span>(Node* head, <span class="keyw
     
     <span class="keyword">return</span> <span class="number">0</span>;
 }</div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB: GIẢI BÀI ĐỀ THI -->
+        <div id="exam" class="tab-content">
+            <section id="exam-problems">
+                <h2>📋 Giải Bài Đề Thi</h2>
+
+                <!-- BÀI 4: Nhị Phân 4 -->
+                <div class="problem">
+                    <h3>🔢 Bài 4: Nhị Phân 4</h3>
+                    
+                    <p><strong>Đề bài:</strong> Sinh tất cả các dãy nhị phân độ dài n (1 ≤ n ≤ 20) sao cho mỗi dãy có tối đa một cụm "11" liên tiếp. In các dãy theo thứ tự từ điển, mỗi dãy trên một dòng. Dòng cuối cùng in số lượng dãy hợp lệ.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Sử dụng thuật toán quay lui để sinh tất cả dãy nhị phân độ dài n</li>
+                            <li>Với mỗi dãy, đếm số cụm "11" liên tiếp</li>
+                            <li>Một cụm "11" là khi có hai bit 1 đứng cạnh nhau</li>
+                            <li>Ví dụ: "011" có 1 cụm "11" (ở vị trí 1-2), "111" có 2 cụm "11" (ở vị trí 0-1 và 1-2)</li>
+                            <li>Chỉ in các dãy có ≤ 1 cụm "11"</li>
+                            <li>Đếm tổng số dãy hợp lệ và in ở dòng cuối</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Thuật toán:</strong>
+                        <ol>
+                            <li>Hàm <code>countConsecutiveOnes(s)</code>: Đếm số cụm "11" trong dãy</li>
+                            <li>Duyệt dãy, nếu gặp "11" và bit trước đó không phải "1" (hoặc là bit đầu) → tăng đếm</li>
+                            <li>Hàm <code>backtrack(pos)</code>: Sinh dãy nhị phân bằng quay lui</li>
+                            <li>Nếu pos == n: Kiểm tra số cụm "11", nếu ≤ 1 thì in và tăng đếm</li>
+                            <li>Ngược lại: Thử đặt 0 và 1 vào vị trí pos, đệ quy</li>
+                            <li>In tất cả dãy hợp lệ theo thứ tự từ điển (tự động do sinh theo thứ tự)</li>
+                        </ol>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>3</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>000
+001
+010
+011
+100
+101
+110
+7</pre>
+                        <p><strong>Giải thích:</strong></p>
+                        <ul>
+                            <li>000, 001, 010, 100, 101: 0 cụm "11" ✓</li>
+                            <li>011, 110: 1 cụm "11" ✓</li>
+                            <li>111: 2 cụm "11" (ở vị trí 0-1 và 1-2) ✗</li>
+                            <li>Tổng cộng: 7 dãy hợp lệ</li>
+                        </ul>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Nhị Phân 4</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;string&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> n;
+<span class="keyword">int</span> count = <span class="number">0</span>;  <span class="comment">// Đếm số dãy hợp lệ</span>
+vector&lt;<span class="keyword">char</span>&gt; sequence;
+
+<span class="comment">// Đếm số cụm "11" liên tiếp trong dãy</span>
+<span class="keyword">int</span> <span class="function">countConsecutiveOnes</span>(<span class="keyword">const</span> vector&lt;<span class="keyword">char</span>&gt;& s) {
+    <span class="keyword">int</span> clusters = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < (<span class="keyword">int</span>)s.size() - <span class="number">1</span>; i++) {
+        <span class="comment">// Nếu gặp "11" và bit trước đó không phải "1" (hoặc là bit đầu)</span>
+        <span class="keyword">if</span> (s[i] == <span class="string">'1'</span> && s[i + <span class="number">1</span>] == <span class="string">'1'</span>) {
+            <span class="keyword">if</span> (i == <span class="number">0</span> || s[i - <span class="number">1</span>] != <span class="string">'1'</span>) {
+                clusters++;
+            }
+        }
+    }
+    <span class="keyword">return</span> clusters;
+}
+
+<span class="comment">// Hàm quay lui sinh dãy nhị phân</span>
+<span class="keyword">void</span> <span class="function">backtrack</span>(<span class="keyword">int</span> pos) {
+    <span class="comment">// Base case: đã sinh xong dãy độ dài n</span>
+    <span class="keyword">if</span> (pos == n) {
+        <span class="comment">// Kiểm tra số cụm "11"</span>
+        <span class="keyword">int</span> clusters = <span class="function">countConsecutiveOnes</span>(sequence);
+        
+        <span class="keyword">if</span> (clusters <= <span class="number">1</span>) {
+            <span class="comment">// In dãy hợp lệ</span>
+            <span class="keyword">for</span> (<span class="keyword">char</span> c : sequence) {
+                cout << c;
+            }
+            cout << endl;
+            count++;
+        }
+        <span class="keyword">return</span>;
+    }
+    
+    <span class="comment">// Thử đặt 0 vào vị trí pos</span>
+    sequence[pos] = <span class="string">'0'</span>;
+    <span class="function">backtrack</span>(pos + <span class="number">1</span>);
+    
+    <span class="comment">// Thử đặt 1 vào vị trí pos</span>
+    sequence[pos] = <span class="string">'1'</span>;
+    <span class="function">backtrack</span>(pos + <span class="number">1</span>);
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cin >> n;
+    
+    sequence.resize(n);
+    
+    <span class="comment">// Sinh tất cả dãy nhị phân</span>
+    <span class="function">backtrack</span>(<span class="number">0</span>);
+    
+    <span class="comment">// In số lượng dãy hợp lệ</span>
+    cout << count << endl;
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+
+                    <div class="card" style="margin-top: 20px; background: #f0f8ff; padding: 20px; border-radius: 10px;">
+                        <h3>📝 Giải Thích Chi Tiết:</h3>
+                        <p><strong>1. Hàm đếm cụm "11":</strong></p>
+                        <ul>
+                            <li>Duyệt dãy từ đầu đến cuối</li>
+                            <li>Khi gặp "11" (s[i] == '1' && s[i+1] == '1'):</li>
+                            <li>Kiểm tra xem có phải bắt đầu cụm mới không (i == 0 hoặc s[i-1] != '1')</li>
+                            <li>Nếu đúng, tăng số cụm lên 1</li>
+                        </ul>
+                        
+                        <p><strong>2. Ví dụ đếm cụm:</strong></p>
+                        <ul>
+                            <li><code>"011"</code>: Có 1 cụm "11" ở vị trí 1-2 (vì bit 0 ở vị trí 0)</li>
+                            <li><code>"110"</code>: Có 1 cụm "11" ở vị trí 0-1 (vì là bit đầu)</li>
+                            <li><code>"111"</code>: Có 2 cụm "11" - cụm 1 ở vị trí 0-1, cụm 2 ở vị trí 1-2</li>
+                            <li><code>"101"</code>: Có 0 cụm "11" (không có hai bit 1 đứng cạnh nhau)</li>
+                        </ul>
+                        
+                        <p><strong>3. Thuật toán quay lui:</strong></p>
+                        <ul>
+                            <li>Với mỗi vị trí từ 0 đến n-1, thử đặt 0 và 1</li>
+                            <li>Khi đã điền đủ n vị trí, kiểm tra số cụm "11"</li>
+                            <li>Nếu ≤ 1 cụm thì in dãy và tăng đếm</li>
+                            <li>Thứ tự từ điển được đảm bảo vì luôn thử 0 trước 1</li>
+                        </ul>
+                        
+                        <p><strong>4. Độ phức tạp:</strong></p>
+                        <ul>
+                            <li>Thời gian: O(2^n × n) - có 2^n dãy nhị phân, mỗi dãy cần O(n) để kiểm tra</li>
+                            <li>Không gian: O(n) - độ sâu đệ quy và mảng lưu dãy</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- BÀI 5: Nhị Phân 5 -->
+                <div class="problem">
+                    <h3>🔢 Bài 5: Nhị Phân 5</h3>
+                    
+                    <p><strong>Đề bài:</strong> Sinh tất cả các dãy nhị phân độ dài n (1 ≤ n ≤ 20) sử dụng ký tự '0' và '1', với điều kiện dãy không được chứa chuỗi con "10". In các dãy theo thứ tự từ điển tăng dần, mỗi dãy trên một dòng.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Gợi ý làm:</strong>
+                        <ul>
+                            <li>Sử dụng thuật toán quay lui để sinh tất cả dãy nhị phân độ dài n</li>
+                            <li>Với mỗi dãy, kiểm tra xem có chứa chuỗi con "10" không</li>
+                            <li>Nếu không chứa "10" thì in dãy đó</li>
+                            <li>Có thể tối ưu bằng cách cắt tỉa: nếu đã đặt '1' ở vị trí i, thì không được đặt '0' ở vị trí i+1</li>
+                            <li>Hoặc nhận xét: dãy hợp lệ phải có dạng "0...01...1" (tất cả số 0 đứng trước, tất cả số 1 đứng sau)</li>
+                            <li>Độ phức tạp: O(2^n × n) nếu kiểm tra đầy đủ, hoặc O(n × số dãy hợp lệ) nếu cắt tỉa</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-box">
+                        <strong>📐 Thuật toán:</strong>
+                        <ol>
+                            <li><strong>Nhận xét quan trọng:</strong> Dãy không chứa "10" nghĩa là không có bit 1 nào đứng trước bit 0</li>
+                            <li>Điều này có nghĩa dãy phải có dạng: tất cả số 0 đứng trước, tất cả số 1 đứng sau</li>
+                            <li>Ví dụ: "000", "001", "011", "111" đều hợp lệ</li>
+                            <li>Ví dụ: "010", "100", "101", "110" đều không hợp lệ (có "10")</li>
+                            <li><strong>Cách 1:</strong> Sinh tất cả dãy, kiểm tra có chứa "10" không</li>
+                            <li><strong>Cách 2 (tối ưu):</strong> Chỉ sinh các dãy dạng "0...01...1"</li>
+                            <li>Với k số 0 và (n-k) số 1, có đúng 1 dãy hợp lệ</li>
+                            <li>Tổng cộng có (n+1) dãy hợp lệ (k từ 0 đến n)</li>
+                        </ol>
+                    </div>
+
+                    <div class="io-box">
+                        <strong>📥 Input mẫu:</strong>
+                        <pre>3</pre>
+
+                        <strong>📤 Output mẫu:</strong>
+                        <pre>000
+001
+011
+111</pre>
+                        <p><strong>Giải thích:</strong></p>
+                        <ul>
+                            <li>000: không có "10" ✓ (0 số 0, 3 số 1 → thực ra là 3 số 0, 0 số 1)</li>
+                            <li>001: không có "10" ✓ (2 số 0, 1 số 1)</li>
+                            <li>010: có "10" ở vị trí 1-2 ✗</li>
+                            <li>011: không có "10" ✓ (1 số 0, 2 số 1)</li>
+                            <li>100: có "10" ở vị trí 0-1 ✗</li>
+                            <li>101: có "10" ở vị trí 0-1 ✗</li>
+                            <li>110: có "10" ở vị trí 1-2 ✗</li>
+                            <li>111: không có "10" ✓ (0 số 0, 3 số 1)</li>
+                            <li>Kết quả: 4 dãy hợp lệ</li>
+                        </ul>
+                    </div>
+
+                    <div class="code-block"><span class="comment">// Code giải bài - Nhị Phân 5 (Cách 1: Kiểm tra đầy đủ)</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;string&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> n;
+vector&lt;<span class="keyword">char</span>&gt; sequence;
+
+<span class="comment">// Kiểm tra dãy có chứa chuỗi con "10" không</span>
+<span class="keyword">bool</span> <span class="function">contains10</span>(<span class="keyword">const</span> vector&lt;<span class="keyword">char</span>&gt;& s) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < (<span class="keyword">int</span>)s.size() - <span class="number">1</span>; i++) {
+        <span class="keyword">if</span> (s[i] == <span class="string">'1'</span> && s[i + <span class="number">1</span>] == <span class="string">'0'</span>) {
+            <span class="keyword">return</span> <span class="keyword">true</span>;
+        }
+    }
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}
+
+<span class="comment">// Hàm quay lui sinh dãy nhị phân</span>
+<span class="keyword">void</span> <span class="function">backtrack</span>(<span class="keyword">int</span> pos) {
+    <span class="comment">// Base case: đã sinh xong dãy độ dài n</span>
+    <span class="keyword">if</span> (pos == n) {
+        <span class="comment">// Kiểm tra không chứa "10"</span>
+        <span class="keyword">if</span> (!<span class="function">contains10</span>(sequence)) {
+            <span class="comment">// In dãy hợp lệ</span>
+            <span class="keyword">for</span> (<span class="keyword">char</span> c : sequence) {
+                cout << c;
+            }
+            cout << endl;
+        }
+        <span class="keyword">return</span>;
+    }
+    
+    <span class="comment">// Thử đặt 0 vào vị trí pos</span>
+    sequence[pos] = <span class="string">'0'</span>;
+    <span class="function">backtrack</span>(pos + <span class="number">1</span>);
+    
+    <span class="comment">// Thử đặt 1 vào vị trí pos</span>
+    sequence[pos] = <span class="string">'1'</span>;
+    <span class="function">backtrack</span>(pos + <span class="number">1</span>);
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cin >> n;
+    
+    sequence.resize(n);
+    
+    <span class="comment">// Sinh tất cả dãy nhị phân</span>
+    <span class="function">backtrack</span>(<span class="number">0</span>);
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+
+                    <div class="code-block" style="margin-top: 20px;"><span class="comment">// Code giải bài - Nhị Phân 5 (Cách 2: Tối ưu - Chỉ sinh dãy hợp lệ)</span>
+<span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;string&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> n;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cin >> n;
+    
+    <span class="comment">// Dãy hợp lệ có dạng: k số 0 đứng trước, (n-k) số 1 đứng sau</span>
+    <span class="comment">// k có thể từ 0 đến n</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k <= n; k++) {
+        <span class="comment">// In k số 0</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < k; i++) {
+            cout << <span class="string">'0'</span>;
+        }
+        <span class="comment">// In (n-k) số 1</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n - k; i++) {
+            cout << <span class="string">'1'</span>;
+        }
+        cout << endl;
+    }
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+
+                    <div class="card" style="margin-top: 20px; background: #f0f8ff; padding: 20px; border-radius: 10px;">
+                        <h3>📝 Giải Thích Chi Tiết:</h3>
+                        <p><strong>1. Nhận xét quan trọng:</strong></p>
+                        <ul>
+                            <li>Dãy không chứa "10" nghĩa là không có bit 1 nào đứng trước bit 0</li>
+                            <li>Điều này có nghĩa: tất cả số 0 phải đứng trước, tất cả số 1 phải đứng sau</li>
+                            <li>Dãy hợp lệ có dạng: <code>00...011...1</code> (k số 0, sau đó (n-k) số 1)</li>
+                        </ul>
+                        
+                        <p><strong>2. Ví dụ với n=3:</strong></p>
+                        <ul>
+                            <li>k=0: <code>111</code> (0 số 0, 3 số 1)</li>
+                            <li>k=1: <code>011</code> (1 số 0, 2 số 1)</li>
+                            <li>k=2: <code>001</code> (2 số 0, 1 số 1)</li>
+                            <li>k=3: <code>000</code> (3 số 0, 0 số 1)</li>
+                            <li>Tổng cộng: 4 dãy hợp lệ (n+1 = 4)</li>
+                        </ul>
+                        
+                        <p><strong>3. So sánh hai cách:</strong></p>
+                        <ul>
+                            <li><strong>Cách 1 (Backtracking):</strong> Sinh tất cả 2^n dãy, kiểm tra từng dãy</li>
+                            <li>Độ phức tạp: O(2^n × n) - phải kiểm tra tất cả dãy</li>
+                            <li><strong>Cách 2 (Tối ưu):</strong> Chỉ sinh (n+1) dãy hợp lệ</li>
+                            <li>Độ phức tạp: O(n²) - chỉ cần tạo (n+1) dãy, mỗi dãy độ dài n</li>
+                            <li>Cách 2 nhanh hơn rất nhiều khi n lớn!</li>
+                        </ul>
+                        
+                        <p><strong>4. Tại sao chỉ có (n+1) dãy hợp lệ?</strong></p>
+                        <ul>
+                            <li>Với mỗi k từ 0 đến n, có đúng 1 dãy hợp lệ: k số 0 + (n-k) số 1</li>
+                            <li>Ví dụ n=3: k=0→"111", k=1→"011", k=2→"001", k=3→"000"</li>
+                            <li>Tổng cộng: n+1 = 4 dãy</li>
+                        </ul>
+                        
+                        <p><strong>5. Độ phức tạp:</strong></p>
+                        <ul>
+                            <li><strong>Cách 1:</strong> O(2^n × n) - thời gian, O(n) - không gian</li>
+                            <li><strong>Cách 2:</strong> O(n²) - thời gian, O(1) - không gian</li>
+                            <li>Với n=20: Cách 1 cần ~20 triệu phép toán, Cách 2 chỉ cần ~400 phép toán</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
         </div>
